@@ -4,18 +4,15 @@ import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.xmp.XmpReader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.pdmodel.common.PDMetadata;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
+ * Reads PDF Metadata using Apache's PDFBox library
+ *
  * @author Payton Garland
  */
 public class PdfReader {
@@ -26,24 +23,28 @@ public class PdfReader {
 
         try {
             PDDocument pdDocument = PDDocument.load(inputStream);
-            PDDocumentCatalog pdDocumentCatalog = pdDocument.getDocumentCatalog();
-            PDMetadata pdMetadata = pdDocumentCatalog.getMetadata();
 
-            PDDocumentInformation pdDocumentInformation = pdDocument.getDocumentInformation();
+            PDDocumentInformation docInfo = pdDocument.getDocumentInformation();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
-            directory.setString(PdfDirectory.TAG_AUTHOR, pdDocumentInformation.getAuthor() == null ? "" : pdDocumentInformation.getAuthor());
-            directory.setString(PdfDirectory.TAG_CREATION_DATE, pdDocumentInformation.getCreationDate() == null ? "" : format.format(pdDocumentInformation.getCreationDate().getTime()));
-            directory.setString(PdfDirectory.TAG_CREATOR, pdDocumentInformation.getCreator() == null ? "" : pdDocumentInformation.getCreator());
-            directory.setString(PdfDirectory.TAG_KEYWORDS, pdDocumentInformation.getCreator() == null ? "" : pdDocumentInformation.getCreator());
-            directory.setString(PdfDirectory.TAG_MOD_DATE, pdDocumentInformation.getModificationDate() == null ? "" : format.format(pdDocumentInformation.getModificationDate().getTime()));
-            directory.setString(PdfDirectory.TAG_PRODUCER, pdDocumentInformation.getProducer() == null ? "" : pdDocumentInformation.getProducer());
-            directory.setString(PdfDirectory.TAG_SUBJECT, pdDocumentInformation.getSubject() == null ? "" : pdDocumentInformation.getSubject());
-            directory.setString(PdfDirectory.TAG_TITLE, pdDocumentInformation.getTitle() == null ? "" : pdDocumentInformation.getTitle());
-            directory.setString(PdfDirectory.TAG_TRAPPED, pdDocumentInformation.getTrapped() == null ? "" : pdDocumentInformation.getTrapped());
+            if (docInfo.getAuthor() != null) { directory.setString(PdfDirectory.TAG_AUTHOR, docInfo.getAuthor()); }
+            if (docInfo.getCreationDate() != null) { directory.setString(PdfDirectory.TAG_CREATION_DATE, format.format(docInfo.getCreationDate().getTime())); }
+            if (docInfo.getCreator() != null) { directory.setString(PdfDirectory.TAG_CREATOR, docInfo.getCreator()); }
+            if (docInfo.getKeywords() != null) { directory.setString(PdfDirectory.TAG_KEYWORDS, docInfo.getKeywords()); }
+            if (docInfo.getModificationDate() != null) { directory.setString(PdfDirectory.TAG_MOD_DATE, format.format(docInfo.getModificationDate().getTime())); }
+            if (docInfo.getProducer() != null) { directory.setString(PdfDirectory.TAG_PRODUCER, docInfo.getProducer()); }
+            if (docInfo.getSubject() != null) { directory.setString(PdfDirectory.TAG_SUBJECT, docInfo.getSubject()); }
+            if (docInfo.getTitle() != null) { directory.setString(PdfDirectory.TAG_TITLE, docInfo.getTitle()); }
+            if (docInfo.getTrapped() != null) { directory.setString(PdfDirectory.TAG_TRAPPED, docInfo.getTrapped()); }
+
+            directory.setFloat(PdfDirectory.TAG_WIDTH, pdDocument.getPage(0).getCropBox().getWidth());
+            directory.setFloat(PdfDirectory.TAG_HEIGHT, pdDocument.getPage(0).getCropBox().getHeight());
+            directory.setInt(PdfDirectory.TAG_PAGE_COUNT, pdDocument.getNumberOfPages());
 
             XmpReader xmpReader = new XmpReader();
-            xmpReader.extract(pdMetadata.getByteArray(), metadata);
+            if (pdDocument.getDocumentCatalog().getMetadata() != null) {
+                xmpReader.extract(pdDocument.getDocumentCatalog().getMetadata().toByteArray(), metadata);
+            }
 
             pdDocument.close();
         } catch (IOException e) {

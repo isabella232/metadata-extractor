@@ -19,6 +19,9 @@ public class PdfDirectory extends Directory
     public static final int TAG_SUBJECT                             = 7;
     public static final int TAG_TITLE                               = 8;
     public static final int TAG_TRAPPED                             = 9;
+    public static final int TAG_WIDTH                               = 10;
+    public static final int TAG_HEIGHT                              = 11;
+    public static final int TAG_PAGE_COUNT                          = 12;
 
     @NotNull
     protected static final HashMap<Integer, String> _tagNameMap = new HashMap<Integer, String>();
@@ -33,6 +36,9 @@ public class PdfDirectory extends Directory
         _tagNameMap.put(TAG_SUBJECT, "Subject");
         _tagNameMap.put(TAG_TITLE, "Title");
         _tagNameMap.put(TAG_TRAPPED, "Trapped");
+        _tagNameMap.put(TAG_WIDTH, "Width");
+        _tagNameMap.put(TAG_HEIGHT, "Height");
+        _tagNameMap.put(TAG_PAGE_COUNT, "Page Count");
     }
 
     public PdfDirectory()
