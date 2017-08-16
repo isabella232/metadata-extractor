@@ -8,7 +8,6 @@ import com.drew.metadata.TagDescriptor;
  */
 public class PdfDescriptor extends TagDescriptor<PdfDirectory>
 {
-
     public PdfDescriptor(@NotNull PdfDirectory directory)
     {
         super(directory);
@@ -19,5 +18,4 @@ public class PdfDescriptor extends TagDescriptor<PdfDirectory>
     {
         return _directory.getString(tagType);
     }
-
 }

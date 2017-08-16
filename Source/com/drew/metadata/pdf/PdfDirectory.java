@@ -48,13 +48,15 @@ public class PdfDirectory extends Directory
 
     @Override
     @NotNull
-    public String getName() {
+    public String getName()
+    {
         return "PDF";
     }
 
     @Override
     @NotNull
-    protected HashMap<Integer, String> getTagNameMap() {
+    protected HashMap<Integer, String> getTagNameMap()
+    {
         return _tagNameMap;
     }
 }

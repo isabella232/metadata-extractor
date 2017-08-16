@@ -22,11 +22,12 @@ public class PdfReader {
         metadata.addDirectory(directory);
 
         try {
+            // Load PDF
             PDDocument pdDocument = PDDocument.load(inputStream);
 
+            // PD Document Information data
             PDDocumentInformation docInfo = pdDocument.getDocumentInformation();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
-
             if (docInfo.getAuthor() != null) { directory.setString(PdfDirectory.TAG_AUTHOR, docInfo.getAuthor()); }
             if (docInfo.getCreationDate() != null) { directory.setString(PdfDirectory.TAG_CREATION_DATE, format.format(docInfo.getCreationDate().getTime())); }
             if (docInfo.getCreator() != null) { directory.setString(PdfDirectory.TAG_CREATOR, docInfo.getCreator()); }
@@ -37,18 +38,21 @@ public class PdfReader {
             if (docInfo.getTitle() != null) { directory.setString(PdfDirectory.TAG_TITLE, docInfo.getTitle()); }
             if (docInfo.getTrapped() != null) { directory.setString(PdfDirectory.TAG_TRAPPED, docInfo.getTrapped()); }
 
+            // PD Document Page data
             directory.setFloat(PdfDirectory.TAG_WIDTH, pdDocument.getPage(0).getCropBox().getWidth());
             directory.setFloat(PdfDirectory.TAG_HEIGHT, pdDocument.getPage(0).getCropBox().getHeight());
             directory.setInt(PdfDirectory.TAG_PAGE_COUNT, pdDocument.getNumberOfPages());
 
+            // PD Document XMP data
             XmpReader xmpReader = new XmpReader();
             if (pdDocument.getDocumentCatalog().getMetadata() != null) {
                 xmpReader.extract(pdDocument.getDocumentCatalog().getMetadata().toByteArray(), metadata);
             }
 
+            // Close PDF
             pdDocument.close();
         } catch (IOException e) {
-            directory.addError("ERROR: IOException thrown during Pdf extraction.");
+            directory.addError("ERROR: IOException thrown during Pdf extraction - " + e.getMessage());
         }
     }
 }
