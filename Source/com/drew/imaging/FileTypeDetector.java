@@ -79,6 +79,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Sitx, new byte[]{ 0x53, 0x74, 0x75, 0x66, 0x66, 0x49, 0x74, 0x21 });
         _root.addPath(FileType.Aac, new byte[]{(byte)0xFF, (byte)0xF1});
         _root.addPath(FileType.Aac, new byte[]{(byte)0xFF, (byte)0xF9});
+        _root.addPath(FileType.Ram, new byte[]{0x72, 0x74, 0x73, 0x70, 0x3A, 0x2F, 0x2F});
     }
 
     private FileTypeDetector() throws Exception

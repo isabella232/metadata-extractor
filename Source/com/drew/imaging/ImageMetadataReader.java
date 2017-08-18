@@ -156,6 +156,7 @@ public class ImageMetadataReader
                 return RafMetadataReader.readMetadata(inputStream);
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
+            case Ram:
             case Aac:
             case Sitx:
             case Sit:
