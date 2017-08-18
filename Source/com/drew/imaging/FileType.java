@@ -45,6 +45,7 @@ public enum FileType
 
     Sit("SIT", s("application/x-stuffit", "application/x-sit"), false, s(".sit")),
     Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
+    Aac("AAC", s("audio/aac", "audio/aacp"), false, s(".aac")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
