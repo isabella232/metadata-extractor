@@ -49,6 +49,7 @@ public enum FileType
     Ram("RAM", s("audio/vnd.rn-realaudio", "audio/x-pn-realaudio"), false, s(".ra", ".ram")),
     Cfbf("CFBF", null, true, null),
     Pdf("PDF", s("application/pdf", "application/x-pdf", "application/x-bzpdf", "application/x-gzpdf"), false, s(".pdf")),
+    Qxp("Quark XPress Document", null, false, s(".qzp", ".qxd")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
