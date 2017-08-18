@@ -80,6 +80,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Aac, new byte[]{(byte)0xFF, (byte)0xF1});
         _root.addPath(FileType.Aac, new byte[]{(byte)0xFF, (byte)0xF9});
         _root.addPath(FileType.Ram, new byte[]{0x72, 0x74, 0x73, 0x70, 0x3A, 0x2F, 0x2F});
+        _root.addPath(FileType.Cfbf, new byte[]{(byte)0xD0, (byte)0xCF, 0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, 0x1A, (byte)0xE1, 0x00});
     }
 
     private FileTypeDetector() throws Exception

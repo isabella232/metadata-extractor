@@ -47,6 +47,7 @@ public enum FileType
     Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
     Aac("AAC", s("audio/aac", "audio/aacp"), false, s(".aac")),
     Ram("RAM", s("audio/vnd.rn-realaudio", "audio/x-pn-realaudio"), false, s(".ra", ".ram")),
+    Cfbf("CFBF", null, true, null),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
