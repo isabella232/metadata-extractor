@@ -50,6 +50,7 @@ public enum FileType
     Cfbf("CFBF", null, true, null),
     Pdf("PDF", s("application/pdf", "application/x-pdf", "application/x-bzpdf", "application/x-gzpdf"), false, s(".pdf")),
     Qxp("Quark XPress Document", null, false, s(".qzp", ".qxd")),
+    Rtf("RTF", s("text/rtf", "application/rtf"), false, s(".rtf")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
