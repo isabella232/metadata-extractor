@@ -85,6 +85,9 @@ public class FileTypeDetector
         _root.addPath(FileType.Qxp, new byte[]{0x00, 0x00, 0x49, 0x49, 0x58, 0x50, 0x52, 0x33}); // "..IIXPR3" (little-endian - intel)
         _root.addPath(FileType.Qxp, new byte[]{0x00, 0x00, 0x4D, 0x4D, 0x58, 0x50, 0x52, 0x33}); // "..MMXPR3" (big-endian - motorola)
         _root.addPath(FileType.Rtf, new byte[]{0x7B, 0x5C, 0x72, 0x74, 0x66, 0x31});
+        _root.addPath(FileType.Swf, "CWS".getBytes());
+        _root.addPath(FileType.Swf, "FWS".getBytes());
+        _root.addPath(FileType.Swf, "ZWS".getBytes());
     }
 
     private FileTypeDetector() throws Exception
