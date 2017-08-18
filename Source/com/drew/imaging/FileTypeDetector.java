@@ -161,6 +161,7 @@ public class FileTypeDetector
         switch (fileType) {
             case Riff:
                 return detectFileType(inputStream, 8);
+            case Cfbf:
             case Tiff:
             default:
                 return fileType;
