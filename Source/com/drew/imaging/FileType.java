@@ -43,6 +43,9 @@ public enum FileType
     Riff(null, null, true, null),
     Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
 
+    Sit("SIT", s("application/x-stuffit", "application/x-sit"), false, s(".sit")),
+    Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
+
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
     /** Canon camera raw, version 1. */

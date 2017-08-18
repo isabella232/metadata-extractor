@@ -156,6 +156,9 @@ public class ImageMetadataReader
                 return RafMetadataReader.readMetadata(inputStream);
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
+            case Sitx:
+            case Sit:
+                return new Metadata();
             default:
                 throw new ImageProcessingException("File format is not supported");
         }
