@@ -156,17 +156,10 @@ public class ImageMetadataReader
                 return RafMetadataReader.readMetadata(inputStream);
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
-            case Rtf:
-            case Qxp:
-            case Pdf:
-            case Cfbf:
-            case Ram:
-            case Aac:
-            case Sitx:
-            case Sit:
-                return new Metadata();
-            default:
+            case Unknown:
                 throw new ImageProcessingException("File format is not supported");
+            default:
+                return new Metadata();
         }
     }
 
