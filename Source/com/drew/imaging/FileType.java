@@ -48,6 +48,7 @@ public enum FileType
     Aac("AAC", s("audio/aac", "audio/aacp"), false, s(".aac")),
     Ram("RAM", s("audio/vnd.rn-realaudio", "audio/x-pn-realaudio"), false, s(".ra", ".ram")),
     Cfbf("CFBF", null, true, null),
+    Pdf("PDF", s("application/pdf", "application/x-pdf", "application/x-bzpdf", "application/x-gzpdf"), false, s(".pdf")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
