@@ -27,7 +27,7 @@ public class EpsDescriptor extends TagDescriptor<EpsDirectory>
             case (TAG_TIFF_PREVIEW_OFFSET):
                 return getByteDescription(tagType);
             default:
-                return _directory.getString(tagType);
+                return super.getDescription(tagType);
         }
     }
 
