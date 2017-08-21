@@ -56,6 +56,7 @@ public enum FileType
     Asf("ASF", s("video/x-ms-asf", "application/vnd.ms-asf"), true, s(".asf")),
     Vob("VOB", s("video/dvd", "video/mpeg", "video/x-ms-vob"), false, s(".VOB")),
     Mxf("MXF", s("application/mxf"), true, s(".mxf")),
+    Flv("FLV", s("video/x-flv", "video/mp4", "audio/mp4"), false, s(".flv", ".f4v", ".f4p", ".f4a", ".f4b")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
