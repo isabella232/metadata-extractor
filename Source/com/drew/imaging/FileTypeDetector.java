@@ -75,7 +75,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Raf, "FUJIFILMCCD-RAW".getBytes());
         _root.addPath(FileType.Rw2, "II".getBytes(), new byte[]{0x55, 0x00});
         _root.addPath(FileType.Eps, "%!PS".getBytes());
-        _root.addPath(FileType.Eps, new byte[]{(byte)0xC5, (byte)0xD0, (byte)0xD3, (byte)0xC6});
+        _root.addPath(FileType.AdobeEps, new byte[]{(byte)0xC5, (byte)0xD0, (byte)0xD3, (byte)0xC6});
         _root.addPath(FileType.Sit, new byte[]{ 0x53, 0x74, 0x75, 0x66, 0x66, 0x49, 0x74, 0x20, 0x28, 0x63, 0x29, 0x31, 0x39, 0x39, 0x37, 0x2D}); // StuffIt (c)1997-
         _root.addPath(FileType.Sit, new byte[]{ 0x53, 0x49, 0x54, 0x21, 0x00 }); // SIT!);
         _root.addPath(FileType.Sitx, new byte[]{ 0x53, 0x74, 0x75, 0x66, 0x66, 0x49, 0x74, 0x21 });

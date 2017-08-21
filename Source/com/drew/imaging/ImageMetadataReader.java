@@ -157,6 +157,7 @@ public class ImageMetadataReader
                 return RafMetadataReader.readMetadata(inputStream);
             case Pdf:
                 return PdfMetadataReader.readMetadata(inputStream);
+            case AdobeEps:
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
             case Unknown:
