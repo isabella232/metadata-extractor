@@ -25,6 +25,8 @@ import com.adobe.xmp.XMPIterator;
 import com.adobe.xmp.XMPMeta;
 import com.adobe.xmp.XMPMetaFactory;
 import com.adobe.xmp.impl.ByteBuffer;
+import com.adobe.xmp.options.PropertyOptions;
+import com.adobe.xmp.properties.XMPProperty;
 import com.adobe.xmp.properties.XMPPropertyInfo;
 import com.drew.imaging.jpeg.JpegSegmentMetadataReader;
 import com.drew.imaging.jpeg.JpegSegmentType;
@@ -39,6 +41,7 @@ import com.drew.metadata.StringValue;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Extracts XMP data from JPEG APP1 segments.
@@ -166,6 +169,19 @@ public class XmpReader implements JpegSegmentMetadataReader
             } else {
                 ByteBuffer buffer = new ByteBuffer(xmpBytes, offset, length);
                 xmpMeta = XMPMetaFactory.parse(buffer.getByteStream());
+            }
+
+            XMPIterator iterator = xmpMeta.iterator();
+
+            int directoryIndex = 0x0100;
+
+            while (iterator.hasNext()) {
+                XMPPropertyInfo property = (XMPPropertyInfo) iterator.next();
+                if (property.getValue() != null) {
+                    XmpDirectory._tagNameMap.put(directoryIndex, property.getPath());
+                    directory.setString(directoryIndex, property.getValue());
+                    directoryIndex++;
+                }
             }
 
             directory.setXMPMeta(xmpMeta);
