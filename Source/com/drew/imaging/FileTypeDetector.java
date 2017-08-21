@@ -90,6 +90,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Swf, "FWS".getBytes());
         _root.addPath(FileType.Swf, "ZWS".getBytes());
         _root.addPath(FileType.Asf, new byte[]{0x30, 0x26, (byte)0xB2, 0x75, (byte)0x8E, 0x66, (byte)0xCF, 0x11, (byte)0xA6, (byte)0xD9, 0x00, (byte)0xAA, 0x00, 0x62, (byte)0xCE, 0x6C});
+        _root.addPath(FileType.Vob, new byte[]{0x00, 0x00, 0x01, (byte)0xBA});
 
     }
 
