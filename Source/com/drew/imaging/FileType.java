@@ -31,46 +31,62 @@ import com.drew.lang.annotations.Nullable;
  */
 public enum FileType
 {
-    Unknown(null, false),
-    Jpeg("image/jpeg", false, ".jpg", ".jpeg", ".jpe"),
-    Tiff("image/tiff", true, ".tiff", ".tif"),
-    Psd("image/vnd.adobe.photoshop", false, ".psd"),
-    Png("image/png", false, ".png"),
-    Bmp("image/bmp", false, ".bmp"),
-    Gif("image/gif", false, ".gif"),
-    Ico("image/x-icon", false, ".ico"),
-    Pcx("image/x-pcx", false, ".pcx"),
-    Riff(null, true, null),
-    Zip("application/zip", true, ".zip", ".zipx"),
-    Indd("application/octet-stream", false, ".indd"),
-    IndesignPackage("application/octet-stream", false, ".zip"),
-    Docx("application/vnd.openxmlformats-officedocument.wordprocessingml.document", false, ".docx", ".docm"),
-    Pptx("application/vnd.openxmlformats-officedocument.presentationml.presentation", false, ".pptx", ".pptm"),
-    Xlsx("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", false, ".xlsx", ".xlsm"),
+    Unknown("Unknown", null, false, null),
+    Jpeg("JPEG", s("image/jpeg"), false, s(".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi")),
+    Tiff("TIFF", s("image/tiff", "image/tiff-fx"), true, s(".tiff", ".tif")),
+    Psd("PSD", s("image/vnd.adobe.photoshop"), false, s(".psd")),
+    Png("PNG", s("image/png"), false, s(".png")),
+    Bmp("BMP", s("image/bmp", "image/x-bmp"), false, s(".bmp", ".dib")),
+    Gif("GIF", s("image/gif"), false, s(".gif")),
+    Ico("ICO", s("image/x-icon"), false, s( ".ico")),
+    Pcx("PCX", s("image/vnd.zbrush.pcx", "image/x-pcx"), false, s(".pcx")),
+    Riff(null, null, true, null),
+    Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
+    AdobeEps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
+
+    Sit("SIT", s("application/x-stuffit", "application/x-sit"), false, s(".sit")),
+    Sitx("SITX", s("application/x-stuffitx", "application/x-sitx"), false, s(".sitx")),
+    Aac("AAC", s("audio/aac", "audio/aacp"), false, s(".aac")),
+    Ram("RAM", s("audio/vnd.rn-realaudio", "audio/x-pn-realaudio"), false, s(".ra", ".ram")),
+    Cfbf("CFBF", null, true, null),
+    Pdf("PDF", s("application/pdf", "application/x-pdf", "application/x-bzpdf", "application/x-gzpdf"), false, s(".pdf")),
+    Qxp("Quark XPress Document", null, false, s(".qzp", ".qxd")),
+    Rtf("RTF", s("text/rtf", "application/rtf"), false, s(".rtf")),
+    Swf("SWF", s("application/vnd.adobe.flash-movie"), false, s(".swf")),
+    Asf("ASF", s("video/x-ms-asf", "application/vnd.ms-asf"), true, s(".asf")),
+    Vob("VOB", s("video/dvd", "video/mpeg", "video/x-ms-vob"), false, s(".VOB")),
+    Mxf("MXF", s("application/mxf"), true, s(".mxf")),
+    Flv("FLV", s("video/x-flv", "video/mp4", "audio/mp4"), false, s(".flv", ".f4v", ".f4p", ".f4a", ".f4b")),
+    Zip("ZIP", s("application/zip"), true, s(".zip", ".zipx")),
+    Indd("INDD", s("application/octet-stream"), false, s(".indd")),
+    IndesignPackage("Indesign Package", s("application/octet-stream"), false, s(".zip")),
+    Docx("DOCX", s("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), false, s(".docx", ".docm")),
+    Pptx("PPTX", s("application/vnd.openxmlformats-officedocument.presentationml.presentation"), false, s(".pptx", ".pptm")),
+    Xlsx("XLSX", s("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), false, s(".xlsx", ".xlsm")),
 
     /** Sony camera raw. */
-    Arw(null, false, ".arw"),
+    Arw("ARW", null, false, s(".arw")),
     /** Canon camera raw, version 1. */
-    Crw(null, false, ".crw"),
+    Crw("CRW", null, false, s(".crw")),
     /** Canon camera raw, version 2. */
-    Cr2(null, false, ".cr2"),
+    Cr2("CR2", null, false, s(".cr2")),
     /** Nikon camera raw. */
-    Nef(null, false, ".nef"),
+    Nef("NEF", null, false, s(".nef")),
     /** Olympus camera raw. */
-    Orf(null, false, ".orf"),
+    Orf("ORF", null, false, s(".orf")),
     /** FujiFilm camera raw. */
-    Raf(null, false, ".raf"),
+    Raf("RAF", null, false, s(".raf")),
     /** Panasonic camera raw. */
-    Rw2(null, false, ".rw2");
+    Rw2("RW2", null, false, s(".rw2"));
 
-    private final String _mimeType;
-
+    private final String _displayName;
+    private final String[] _mimeType;
     private final boolean _isContainer;
-
     private final String[] _extensions;
 
-    FileType(String mimeType, boolean isContainer, String... extensions)
+    FileType(String displayName, String[] mimeType, boolean isContainer, String... extensions)
     {
+        _displayName = displayName;
         _mimeType = mimeType;
         _isContainer = isContainer;
         _extensions = extensions;
@@ -79,11 +95,11 @@ public enum FileType
     @NotNull
     public String getName()
     {
-        return this.name();
+        return this._displayName;
     }
 
     @Nullable
-    public String getMimeType()
+    public String[] getMimeType()
     {
         return _mimeType;
     }
@@ -98,5 +114,10 @@ public enum FileType
     public String[] getExtension()
     {
         return _extensions;
+    }
+
+    private static String[] s(String... strings)
+    {
+        return strings;
     }
 }
