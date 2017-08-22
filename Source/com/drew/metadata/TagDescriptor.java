@@ -350,14 +350,14 @@ public class TagDescriptor<T extends Directory>
     protected String getOrientationDescription(int tag)
     {
         return getIndexedDescription(tag, 1,
-            "Horizontal (normal)",
-            "Mirror horizontal",
-            "Rotate 180",
-            "Mirror vertical",
-            "Mirror horizontal and rotate 270 CW",
-            "Rotate 90 CW",
-            "Mirror horizontal and rotate 90 CW",
-            "Rotate 270 CW");
+            "Top, left side (Horizontal / normal)",
+            "Top, right side (Mirror horizontal)",
+            "Bottom, right side (Rotate 180)",
+            "Bottom, left side (Mirror vertical)",
+            "Left side, top (Mirror horizontal and rotate 270 CW)",
+            "Right side, top (Rotate 90 CW)",
+            "Right side, bottom (Mirror horizontal and rotate 90 CW)",
+            "Left side, bottom (Rotate 270 CW)");
     }
 
     @Nullable
