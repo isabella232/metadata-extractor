@@ -17,11 +17,10 @@ import java.util.zip.ZipInputStream;
 public class ZipFileTypeDetector
 {
     static List<ZipFilter> filters;
-    static Metadata metadata;
 
     public static FileType detectFileType(@NotNull InputStream inputStream) throws IOException
     {
-        filters = Arrays.asList(new IndesignPackageFilter(), new OoxmlFilter(), new ZipFileFilter());
+        filters = Arrays.asList(new IndesignPackageFilter(), new OoxmlFilter());
 
         ZipInputStream reader = new ZipInputStream(inputStream);
 

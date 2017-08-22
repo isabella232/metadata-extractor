@@ -59,7 +59,7 @@ public enum FileType
     Flv("FLV", s("video/x-flv", "video/mp4", "audio/mp4"), false, s(".flv", ".f4v", ".f4p", ".f4a", ".f4b")),
     Zip("ZIP", s("application/zip"), true, s(".zip", ".zipx")),
     Indd("INDD", s("application/octet-stream"), false, s(".indd")),
-    IndesignPackage("Indesign Package", s("application/octet-stream"), false, s(".zip")),
+    IndesignPackage("Indesign Package", s("application/zip"), false, s(".zip")),
     Docx("DOCX", s("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), false, s(".docx", ".docm")),
     Pptx("PPTX", s("application/vnd.openxmlformats-officedocument.presentationml.presentation"), false, s(".pptx", ".pptm")),
     Xlsx("XLSX", s("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), false, s(".xlsx", ".xlsm")),
