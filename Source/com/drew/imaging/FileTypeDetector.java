@@ -20,11 +20,13 @@
  */
 package com.drew.imaging;
 
+import com.drew.imaging.zip.ZipFileTypeDetector;
 import com.drew.lang.ByteTrie;
 import com.drew.lang.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.zip.ZipInputStream;
 
 /**
  * Examines the a file's first bytes and estimates the file's type.
@@ -93,6 +95,9 @@ public class FileTypeDetector
         _root.addPath(FileType.Vob, new byte[]{0x00, 0x00, 0x01, (byte)0xBA});
         _root.addPath(FileType.Mxf, new byte[]{0x06, 0x0e, 0x2b, 0x34, 0x02, 0x05, 0x01, 0x01, 0x0d, 0x01, 0x02, 0x01, 0x01, 0x02}); // has offset?
         _root.addPath(FileType.Flv, new byte[]{0x46, 0x4C, 0x56});
+
+        _root.addPath(FileType.Zip, "PK".getBytes());
+        _root.addPath(FileType.Indd, new byte[]{0x06, 0x06, (byte)0xED, (byte)0xF5, (byte)0xD8, 0x1D, 0x46, (byte)0xE5, (byte)0xBD, 0x31, (byte)0xEF, (byte)0xE7, (byte)0xFE, 0x74, (byte)0xB7, 0x1D});
 
     }
 
@@ -165,6 +170,8 @@ public class FileTypeDetector
         switch (fileType) {
             case Riff:
                 return detectFileType(inputStream, 8);
+            case Zip:
+                return ZipFileTypeDetector.detectFileType(inputStream);
             case Cfbf:
             case Tiff:
             default:

@@ -31,7 +31,7 @@ import com.drew.lang.annotations.Nullable;
  */
 public enum FileType
 {
-    Unknown("Unknown", null, false),
+    Unknown("Unknown", null, false, null),
     Jpeg("JPEG", s("image/jpeg"), false, s(".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi")),
     Tiff("TIFF", s("image/tiff", "image/tiff-fx"), true, s(".tiff", ".tif")),
     Psd("PSD", s("image/vnd.adobe.photoshop"), false, s(".psd")),
@@ -57,6 +57,12 @@ public enum FileType
     Vob("VOB", s("video/dvd", "video/mpeg", "video/x-ms-vob"), false, s(".VOB")),
     Mxf("MXF", s("application/mxf"), true, s(".mxf")),
     Flv("FLV", s("video/x-flv", "video/mp4", "audio/mp4"), false, s(".flv", ".f4v", ".f4p", ".f4a", ".f4b")),
+    Zip("ZIP", s("application/zip"), true, s(".zip", ".zipx")),
+    Indd("INDD", s("application/octet-stream"), false, s(".indd")),
+    IndesignPackage("Indesign Package", s("application/octet-stream"), false, s(".zip")),
+    Docx("DOCX", s("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), false, s(".docx", ".docm")),
+    Pptx("PPTX", s("application/vnd.openxmlformats-officedocument.presentationml.presentation"), false, s(".pptx", ".pptm")),
+    Xlsx("XLSX", s("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), false, s(".xlsx", ".xlsm")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
