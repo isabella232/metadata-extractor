@@ -52,6 +52,9 @@ public class IccDirectory extends Directory
     public static final int TAG_PROFILE_CREATOR = 80;
     public static final int TAG_TAG_COUNT = 128;
 
+    // Full ICC Profile - Only available via MetadataOptions
+    public static final int TAG_ICC_PROFILE = 0x0200;
+
     // These tag values
 
     public static final int TAG_TAG_A2B0 = 0x41324230;
@@ -108,6 +111,8 @@ public class IccDirectory extends Directory
     protected static final HashMap<Integer, String> _tagNameMap = new HashMap<Integer, String>();
 
     static {
+        _tagNameMap.put(TAG_ICC_PROFILE, "ICC Profile");
+
         _tagNameMap.put(TAG_PROFILE_BYTE_COUNT, "Profile Size");
         _tagNameMap.put(TAG_CMM_TYPE, "CMM Type");
         _tagNameMap.put(TAG_PROFILE_VERSION, "Version");

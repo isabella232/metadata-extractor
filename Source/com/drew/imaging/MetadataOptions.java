@@ -1,22 +1,39 @@
 package com.drew.imaging;
 
+import com.drew.lang.annotations.NotNull;
+
 /**
  * @author Payton Garland
  */
 public class MetadataOptions
 {
-    boolean extractIccProfile;
+    private final boolean extractIccProfile;
 
-    public MetadataOptions() {
-        this.extractIccProfile = false;
+    public MetadataOptions(@NotNull final boolean extractIccProfile) {
+        this.extractIccProfile = extractIccProfile;
     }
 
-    public void setExtractIccProfile(boolean option) {
-        this.extractIccProfile = option;
+    public boolean shouldExtractIccProfile() {
+        return extractIccProfile;
     }
 
-    public void reset()
+    public static class MetadataOptionsBuilder
     {
-        this.extractIccProfile = false;
+        boolean extractIccProfile;
+
+        public MetadataOptionsBuilder() {
+
+        }
+
+        public MetadataOptionsBuilder setExtractIccProfile(@NotNull boolean option) {
+            this.extractIccProfile = option;
+            return this;
+        }
+
+        public MetadataOptions create() {
+            return new MetadataOptions(
+                extractIccProfile
+            );
+        }
     }
 }

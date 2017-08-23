@@ -201,7 +201,6 @@ public class ImageMetadataReader
     {
         metadataOptions = options;
         Metadata metadata = readMetadata(file);
-        metadataOptions.reset();
         return metadata;
     }
 
@@ -210,7 +209,6 @@ public class ImageMetadataReader
     {
         metadataOptions = options;
         Metadata metadata = readMetadata(inputStream);
-        metadataOptions.reset();
         return metadata;
     }
 
@@ -219,7 +217,6 @@ public class ImageMetadataReader
     {
         metadataOptions = options;
         Metadata metadata = readMetadata(inputStream, streamLength, fileType);
-        metadataOptions.reset();
         return metadata;
     }
 
@@ -228,7 +225,6 @@ public class ImageMetadataReader
     {
         metadataOptions = options;
         Metadata metadata = readMetadata(inputStream, streamLength);
-        metadataOptions.reset();
         return metadata;
     }
 

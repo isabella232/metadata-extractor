@@ -20,6 +20,8 @@
  */
 package com.drew.metadata.icc;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.MetadataOptions;
 import com.drew.imaging.jpeg.JpegSegmentMetadataReader;
 import com.drew.imaging.jpeg.JpegSegmentType;
 import com.drew.lang.ByteArrayReader;
@@ -31,6 +33,8 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataReader;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -102,6 +106,18 @@ public class IccReader implements JpegSegmentMetadataReader, MetadataReader
 
         if (parentDirectory != null)
             directory.setParent(parentDirectory);
+
+        if (ImageMetadataReader.metadataOptions.shouldExtractIccProfile()) {
+            try {
+                if (reader.getLength() == (int) reader.getLength()) {
+                    directory.setByteArray(IccDirectory.TAG_ICC_PROFILE, reader.getBytes(0, (int)reader.getLength()));
+                } else {
+                    directory.addError("Unable to extract ICC Profile: length does not fit in integer");
+                }
+            } catch (IOException e) {
+                directory.addError("Unable to extract ICC Profile: " + e.getMessage());
+            }
+        }
 
         try {
             int profileByteCount = reader.getInt32(IccDirectory.TAG_PROFILE_BYTE_COUNT);
