@@ -79,6 +79,8 @@ import java.util.Collection;
  */
 public class ImageMetadataReader
 {
+    public static MetadataOptions metadataOptions;
+
     /**
      * Reads metadata from an {@link InputStream}.
      *
@@ -191,6 +193,42 @@ public class ImageMetadataReader
             inputStream.close();
         }
         new FileMetadataReader().read(file, metadata);
+        return metadata;
+    }
+
+    @NotNull
+    public static Metadata readMetadata(@NotNull final File file, @NotNull MetadataOptions options) throws  ImageProcessingException, IOException
+    {
+        metadataOptions = options;
+        Metadata metadata = readMetadata(file);
+        metadataOptions.reset();
+        return metadata;
+    }
+
+    @NotNull
+    public static Metadata readMetadata(@NotNull final InputStream inputStream, @NotNull MetadataOptions options) throws ImageProcessingException, IOException
+    {
+        metadataOptions = options;
+        Metadata metadata = readMetadata(inputStream);
+        metadataOptions.reset();
+        return metadata;
+    }
+
+    @NotNull
+    public static Metadata readMetadata(@NotNull final InputStream inputStream, final long streamLength, final FileType fileType, @NotNull MetadataOptions options) throws IOException, ImageProcessingException
+    {
+        metadataOptions = options;
+        Metadata metadata = readMetadata(inputStream, streamLength, fileType);
+        metadataOptions.reset();
+        return metadata;
+    }
+
+    @NotNull
+    public static Metadata readMetadata(@NotNull final InputStream inputStream, final long streamLength, @NotNull MetadataOptions options) throws ImageProcessingException, IOException
+    {
+        metadataOptions = options;
+        Metadata metadata = readMetadata(inputStream, streamLength);
+        metadataOptions.reset();
         return metadata;
     }
 
