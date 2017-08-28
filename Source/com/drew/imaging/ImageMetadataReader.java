@@ -177,10 +177,13 @@ public class ImageMetadataReader
                 return Mp4MetadataReader.readMetadata(inputStream);
             case Heif:
                 return HeifMetadataReader.readMetadata(inputStream);
+            case AdobeEps:
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
-            default:
+            case Unknown:
                 throw new ImageProcessingException("File format is not supported");
+            default:
+                return new Metadata();
         }
     }
 
