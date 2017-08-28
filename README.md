@@ -49,6 +49,7 @@ The library understands several formats of metadata, many of which may be presen
 * [GIF](http://en.wikipedia.org/wiki/Graphics_Interchange_Format) properties
 * [ICO](http://en.wikipedia.org/wiki/ICO_(file_format)) properties
 * [PCX](http://en.wikipedia.org/wiki/PCX) properties
+* [PDF](https://en.wikipedia.org/wiki/Portable_Document_Format) properties
 * [QuickTime](https://en.wikipedia.org/wiki/QuickTime_File_Format) properties
 * [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14) properties
 * [HEIF](https://en.wikipedia.org/wiki/High_Efficiency_Image_File_Format) properties
@@ -67,6 +68,7 @@ It will process files of type:
 * GIF
 * ICO
 * PCX
+* PDF
 * QuickTime
 * MP4
 * HEIF

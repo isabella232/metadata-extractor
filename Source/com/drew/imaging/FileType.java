@@ -72,7 +72,6 @@ public enum FileType
     Pptx("PPTX", s("application/vnd.openxmlformats-officedocument.presentationml.presentation"), false, s(".pptx", ".pptm")),
     Xlsx("XLSX", s("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), false, s(".xlsx", ".xlsm")),
 
-
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
     /** Canon camera raw, version 1. */

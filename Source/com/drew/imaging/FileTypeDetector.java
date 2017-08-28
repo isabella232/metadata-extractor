@@ -70,6 +70,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Webp, "WEBP".getBytes());
         _root.addPath(FileType.Iff, "FORM".getBytes());
         _root.addPath(FileType.Riff, "RIFF".getBytes());
+        _root.addPath(FileType.Pdf, "%PDF".getBytes());
         _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
         _root.addPath(FileType.Aiff, "AIFC".getBytes()); // Compressed form of AIFF
 

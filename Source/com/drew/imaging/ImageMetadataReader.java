@@ -32,6 +32,7 @@ import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.imaging.mp4.Mp4MetadataReader;
 import com.drew.imaging.quicktime.QtMetadataReader;
 import com.drew.imaging.pcx.PcxMetadataReader;
+import com.drew.imaging.pdf.PdfMetadataReader;
 import com.drew.imaging.png.PngMetadataReader;
 import com.drew.imaging.psd.PsdMetadataReader;
 import com.drew.imaging.raf.RafMetadataReader;
@@ -163,6 +164,8 @@ public class ImageMetadataReader
                 return WebpMetadataReader.readMetadata(inputStream);
             case Raf:
                 return RafMetadataReader.readMetadata(inputStream);
+            case Pdf:
+                return PdfMetadataReader.readMetadata(inputStream);
             case Indd:
                 return InddMetadataReader.readMetadata(inputStream);
             case Avi:
