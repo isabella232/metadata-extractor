@@ -71,11 +71,7 @@ public class MovieHeaderAtom extends FullAtom
 
         // Get duration and time scale
         duration = duration / timescale;
-        Integer hours = (int)duration / (int)(Math.pow(60, 2));
-        Integer minutes = ((int)duration / (int)(Math.pow(60, 1))) - (hours * 60);
-        Integer seconds = (int)Math.ceil((duration / (Math.pow(60, 0))) - (minutes * 60));
-        String time = String.format("%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
-        directory.setString(QtDirectory.TAG_DURATION, time);
+        directory.setLong(QtDirectory.TAG_DURATION, duration);
         directory.setLong(QtDirectory.TAG_TIME_SCALE, timescale);
 
         // Calculate preferred rate fixed point

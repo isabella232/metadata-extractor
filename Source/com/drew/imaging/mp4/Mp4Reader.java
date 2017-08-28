@@ -11,16 +11,26 @@ import java.util.zip.DataFormatException;
 public class Mp4Reader
 {
     private StreamReader reader;
+    private int tabCount;
 
     public void extract(Metadata metadata, InputStream inputStream, Mp4Handler handler) throws IOException, DataFormatException
     {
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        processBoxes(reader, -1, handler);
+        boolean printVisited = false;
+        tabCount = 0;
+
+        if (printVisited) {
+            System.out.println("_______________Beginning to Print Tree_______________");
+            System.out.println("| \"\" = leaf      \"[]\" = container    \"{}\" = Unknown |");
+            System.out.println("_____________________________________________________");
+        }
+
+        processBoxes(reader, -1, handler, printVisited);
     }
 
-    private void processBoxes(StreamReader reader, long atomEnd, Mp4Handler mp4handler)
+    private void processBoxes(StreamReader reader, long atomEnd, Mp4Handler mp4handler, boolean printVisited)
     {
         try {
             long startPos = reader.getPosition();
@@ -34,9 +44,29 @@ public class Mp4Reader
                  */
                 if (mp4handler.shouldAcceptContainer(box)) {
 
-                    processBoxes(reader, box.size + startPos, mp4handler.processContainer(box));
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println(" [" + box.type + "]");
+                        tabCount++;
+                    }
+
+                    mp4handler.processContainer(box);
+                    processBoxes(reader, box.size + reader.getPosition() - 8, mp4handler, printVisited);
+
+                    if (printVisited) {
+                        tabCount--;
+                    }
 
                 } else if (mp4handler.shouldAcceptBox(box)) {
+
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println("  " + box.type);
+                    }
 
                     mp4handler = mp4handler.processBox(box, reader.getBytes((int)box.size - 8));
 
@@ -46,6 +76,13 @@ public class Mp4Reader
                         reader.skip(box.size - 8);
                     } else if (box.size == -1) {
                         break;
+                    }
+
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println(" {" + box.type + "}");
                     }
 
                 }

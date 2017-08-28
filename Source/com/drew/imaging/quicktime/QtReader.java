@@ -11,6 +11,7 @@ import java.util.zip.DataFormatException;
 
 public class QtReader {
     private StreamReader reader;
+    private int tabCount;
 
     public void extract(Metadata metadata, InputStream inputStream, QtHandler handler) throws IOException, DataFormatException
     {
@@ -20,10 +21,19 @@ public class QtReader {
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        processAtoms(reader, -1, handler);
+        boolean printVisited = false;
+        tabCount = 0;
+
+        if (printVisited) {
+            System.out.println("_______________Beginning to Print Tree_______________");
+            System.out.println("| \"\" = leaf      \"[]\" = container    \"{}\" = Unknown |");
+            System.out.println("_____________________________________________________");
+        }
+
+        processAtoms(reader, -1, handler, printVisited);
     }
 
-    private void processAtoms(StreamReader reader, long atomEnd, QtHandler qtHandler)
+    private void processAtoms(StreamReader reader, long atomEnd, QtHandler qtHandler, boolean printVisited)
     {
         try {
             long startPos = reader.getPosition();
@@ -37,9 +47,29 @@ public class QtReader {
                  */
                 if (qtHandler.shouldAcceptContainer(atom)) {
 
-                    processAtoms(reader, atom.size + startPos, qtHandler.processContainer(atom));
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println(" [" + atom.type + "]");
+                        tabCount++;
+                    }
+
+                    qtHandler.processContainer(atom);
+                    processAtoms(reader, atom.size + reader.getPosition() - 8, qtHandler, printVisited);
+
+                    if (printVisited) {
+                        tabCount--;
+                    }
 
                 } else if (qtHandler.shouldAcceptAtom(atom)) {
+
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println("  " + atom.type);
+                    }
 
                     qtHandler = qtHandler.processAtom(atom, reader.getBytes((int)atom.size - 8));
 
@@ -51,10 +81,17 @@ public class QtReader {
                         break;
                     }
 
+                    if (printVisited) {
+                        for (int i = 0; i < tabCount; i++) {
+                            System.out.print("   " + i + "   |");
+                        }
+                        System.out.println(" {" + atom.type + "}");
+                    }
+
                 }
             }
         } catch (IOException ignored) {
-
+            // Currently, reader relies on IOException to end
         }
     }
 

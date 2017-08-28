@@ -22,6 +22,8 @@ public class QtDescriptor extends TagDescriptor<QtDirectory> {
                 return getMajorBrandDescription(tagType);
             case (QtDirectory.TAG_COMPATIBLE_BRANDS):
                 return getCompatibleBrandsDescription(tagType);
+            case (QtDirectory.TAG_DURATION):
+                return getDurationDescription();
             default:
                 return _directory.getString(tagType);
         }
@@ -51,5 +53,18 @@ public class QtDescriptor extends TagDescriptor<QtDirectory> {
             }
         }
         return Arrays.toString(compatibleBrandsValues.toArray());
+    }
+
+    private String getDurationDescription()
+    {
+        Long durationObject = _directory.getLongObject(QtDirectory.TAG_DURATION);
+        if (durationObject == null)
+            return null;
+        long duration = (long)durationObject;
+
+        Integer hours = (int) duration / (int) (Math.pow(60, 2));
+        Integer minutes = ((int) duration / (int) (Math.pow(60, 1))) - (hours * 60);
+        Integer seconds = (int) Math.ceil((duration / (Math.pow(60, 0))) - (minutes * 60));
+        return String.format("%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
     }
 }
