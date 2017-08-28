@@ -19,7 +19,7 @@ public class HeifReader
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        boolean printVisited = true;
+        boolean printVisited = false;
         tabCount = 0;
 
         if (printVisited) {
@@ -88,7 +88,7 @@ public class HeifReader
                 }
             }
         } catch (IOException ignored) {
-            System.out.println(ignored.getMessage());
+            // Currently, reader relies on IOException to end
         }
     }
 }
