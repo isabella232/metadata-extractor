@@ -38,6 +38,7 @@ public enum FileType
     Ico("ICO", s("image/x-icon"), false, s( ".ico")),
     Pcx("PCX", s("image/vnd.zbrush.pcx", "image/x-pcx"), false, s(".pcx")),
     Riff(null, null, true, null),
+    Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
