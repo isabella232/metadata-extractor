@@ -113,7 +113,7 @@ public class FileTypeDetector
         _root.addPath(FileType.Heif, "ftypheix".getBytes());
         _root.addPath(FileType.Heif, "ftyphevc".getBytes());
         _root.addPath(FileType.Heif, "ftyphevx".getBytes());
-      
+
         _root.addPath(FileType.Eps, "%!PS".getBytes());
         _root.addPath(FileType.Eps, new byte[]{(byte)0xC5, (byte)0xD0, (byte)0xD3, (byte)0xC6});
     }
