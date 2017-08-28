@@ -20,6 +20,7 @@
  */
 package com.drew.imaging;
 
+import com.drew.imaging.zip.ZipFileTypeDetector;
 import com.drew.lang.ByteTrie;
 import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.annotations.NotNull;
@@ -29,6 +30,7 @@ import com.drew.metadata.webp.WebpDirectory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.zip.ZipInputStream;
 import java.io.InputStream;
 
 /**
@@ -84,6 +86,9 @@ public class FileTypeDetector
         _root.addPath(FileType.Orf, "IIRS".getBytes(), new byte[]{(byte)0x08, 0x00});
         _root.addPath(FileType.Raf, "FUJIFILMCCD-RAW".getBytes());
         _root.addPath(FileType.Rw2, "II".getBytes(), new byte[]{0x55, 0x00});
+
+        _root.addPath(FileType.Zip, "PK".getBytes());
+        _root.addPath(FileType.Indd, new byte[]{0x06, 0x06, (byte)0xED, (byte)0xF5, (byte)0xD8, 0x1D, 0x46, (byte)0xE5, (byte)0xBD, 0x31, (byte)0xEF, (byte)0xE7, (byte)0xFE, 0x74, (byte)0xB7, 0x1D});
 
         // Potential root atoms... typically starts with FTYP... often at 4 byte offset
         _root.addPath(FileType.Mov, new byte[]{0x6D, 0x6F, 0x6F, 0x76}); // moov
@@ -198,6 +203,9 @@ public class FileTypeDetector
     {
         switch (fileType) {
             case Riff:
+                return detectFileType(inputStream, 8);
+            case Zip:
+                return ZipFileTypeDetector.detectFileType(inputStream);
             case Iff:
                 return detectFileType(inputStream, 8);
             case Tiff:
