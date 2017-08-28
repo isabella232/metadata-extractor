@@ -45,6 +45,11 @@ public enum FileType
     Mov("MOV", s("video/quicktime"), true, s(".mov", ".qt")),
     Mp4("MP4", s("video/mp4"), false, s(".mp4", ".m4a", ".m4p", ".m4b", ".m4r", ".m4v")),
     Heif("HEIF", s("image/heif", "image/heic", "image/heif-sequence", "image/heic-sequence"), false, s(".heif", ".heic")),
+    Wav("WAV", s("audio/vnd.wave", "audio/wav", "audio/wave", "audio/x-wav"), false, s(".wav", ".wave")),
+    Avi("AVI", s("video/vnd.avi", "video/avi", "video/msvideo", "video/x-msvideo"), false, s(".avi")),
+    Webp("WebP", s("image/webp"), false, s(".webp")),
+    Iff("IFF", null, true, s(".iff")),
+    Aiff("AIFF", s("audio/x-aiff", "audio/aiff"), false, s(".aiff", ".aif", ".aifc")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
