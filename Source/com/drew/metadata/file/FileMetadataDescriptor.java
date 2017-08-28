@@ -60,4 +60,3 @@ public class FileMetadataDescriptor extends TagDescriptor<FileMetadataDirectory>
         return Long.toString(size) + " bytes";
     }
 }
-
