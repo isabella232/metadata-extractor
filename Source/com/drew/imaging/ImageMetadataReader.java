@@ -37,10 +37,7 @@ import com.drew.imaging.zip.IndesignPackageFilter;
 import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.StringUtil;
 import com.drew.lang.annotations.NotNull;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
-import com.drew.metadata.Tag;
+import com.drew.metadata.*;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.file.FileMetadataReader;
 

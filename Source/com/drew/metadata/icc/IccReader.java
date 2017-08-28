@@ -21,7 +21,6 @@
 package com.drew.metadata.icc;
 
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.MetadataOptions;
 import com.drew.imaging.jpeg.JpegSegmentMetadataReader;
 import com.drew.imaging.jpeg.JpegSegmentType;
 import com.drew.lang.ByteArrayReader;
@@ -33,8 +32,6 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataReader;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
