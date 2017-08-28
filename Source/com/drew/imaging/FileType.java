@@ -42,6 +42,9 @@ public enum FileType
     Pcx("PCX", s("image/vnd.zbrush.pcx", "image/x-pcx"), false, s(".pcx")),
     Riff(null, null, true, null),
     Eps("EPS", s("application/postscript", "application/eps", "application/x-eps", "image/eps", "image/x-eps"), false, s(".eps", ".epsf", ".epsi")),
+    Mov("MOV", s("video/quicktime"), true, s(".mov", ".qt")),
+    Mp4("MP4", s("video/mp4"), false, s(".mp4", ".m4a", ".m4p", ".m4b", ".m4r", ".m4v")),
+    Heif("HEIF", s("image/heif", "image/heic", "image/heif-sequence", "image/heic-sequence"), false, s(".heif", ".heic")),
 
     /** Sony camera raw. */
     Arw("ARW", null, false, s(".arw")),
