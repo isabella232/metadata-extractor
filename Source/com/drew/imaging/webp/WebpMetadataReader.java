@@ -20,13 +20,14 @@
  */
 package com.drew.imaging.webp;
 
-import com.drew.imaging.riff.RiffProcessingException;
-import com.drew.imaging.riff.RiffReader;
+import com.drew.imaging.iff.IffProcessingException;
+import com.drew.imaging.iff.IffReader;
 import com.drew.lang.StreamReader;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.file.FileMetadataReader;
-import com.drew.metadata.webp.WebpRiffHandler;
+import com.drew.metadata.webp.WebpDirectory;
+import com.drew.metadata.webp.WebpHandler;
 
 import java.io.*;
 
@@ -38,7 +39,7 @@ import java.io.*;
 public class WebpMetadataReader
 {
     @NotNull
-    public static Metadata readMetadata(@NotNull File file) throws IOException, RiffProcessingException
+    public static Metadata readMetadata(@NotNull File file) throws IOException, IffProcessingException
     {
         InputStream inputStream = new FileInputStream(file);
         Metadata metadata;
@@ -52,10 +53,10 @@ public class WebpMetadataReader
     }
 
     @NotNull
-    public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, RiffProcessingException
+    public static Metadata readMetadata(@NotNull InputStream inputStream) throws IOException, IffProcessingException
     {
         Metadata metadata = new Metadata();
-        new RiffReader().processRiff(new StreamReader(inputStream), new WebpRiffHandler(metadata));
+        new IffReader().processIff(new StreamReader(inputStream), new WebpHandler(metadata, new WebpDirectory()));
         return metadata;
     }
 }

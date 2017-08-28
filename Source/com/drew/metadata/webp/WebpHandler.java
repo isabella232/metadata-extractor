@@ -20,7 +20,7 @@
  */
 package com.drew.metadata.webp;
 
-import com.drew.imaging.riff.RiffHandler;
+import com.drew.imaging.iff.IffHandler;
 import com.drew.lang.ByteArrayReader;
 import com.drew.lang.RandomAccessReader;
 import com.drew.lang.annotations.NotNull;
@@ -32,7 +32,7 @@ import com.drew.metadata.xmp.XmpReader;
 import java.io.IOException;
 
 /**
- * Implementation of {@link RiffHandler} specialising in WebP support.
+ * Implementation of {@link IffHandler} specialising in WebP support.
  *
  * Extracts data from chunk types:
  *
@@ -43,42 +43,48 @@ import java.io.IOException;
  *     <li><code>"XMP "</code>: full XMP data</li>
  * </ul>
  */
-public class WebpRiffHandler implements RiffHandler
+public class WebpHandler extends IffHandler
 {
-    @NotNull
-    private final Metadata _metadata;
+    Metadata _metadata;
 
-    public WebpRiffHandler(@NotNull Metadata metadata)
+    public WebpHandler(Metadata metadata, WebpDirectory directory)
     {
+        super(metadata, directory);
         _metadata = metadata;
     }
 
-    public boolean shouldAcceptRiffIdentifier(@NotNull String identifier)
+    public boolean shouldAcceptIffIdentifier(@NotNull String identifier)
     {
-        return identifier.equals("WEBP");
+        return identifier.equals(WebpDirectory.FORMAT);
     }
 
     public boolean shouldAcceptChunk(@NotNull String fourCC)
     {
-        return fourCC.equals("VP8X")
-            || fourCC.equals("VP8L")
-            || fourCC.equals("VP8 ")
-            || fourCC.equals("EXIF")
-            || fourCC.equals("ICCP")
-            || fourCC.equals("XMP ");
+        return fourCC.equals(WebpDirectory.CHUNK_VP8X)
+            || fourCC.equals(WebpDirectory.CHUNK_VP8L)
+            || fourCC.equals(WebpDirectory.CHUNK_VP8)
+            || fourCC.equals(WebpDirectory.CHUNK_EXIF)
+            || fourCC.equals(WebpDirectory.CHUNK_ICCP)
+            || fourCC.equals(WebpDirectory.CHUNK_XMP);
+    }
+
+    @Override
+    public boolean shouldAcceptList(String fourCC)
+    {
+        return false;
     }
 
     public void processChunk(@NotNull String fourCC, @NotNull byte[] payload)
     {
 //        System.out.println("Chunk " + fourCC + " " + payload.length + " bytes");
-
-        if (fourCC.equals("EXIF")) {
+        WebpDirectory directory = new WebpDirectory();
+        if (fourCC.equals(WebpDirectory.CHUNK_EXIF)) {
             new ExifReader().extract(new ByteArrayReader(payload), _metadata);
-        } else if (fourCC.equals("ICCP")) {
+        } else if (fourCC.equals(WebpDirectory.CHUNK_ICCP)) {
             new IccReader().extract(new ByteArrayReader(payload), _metadata);
-        } else if (fourCC.equals("XMP ")) {
+        } else if (fourCC.equals(WebpDirectory.CHUNK_XMP)) {
             new XmpReader().extract(payload, _metadata);
-        } else if (fourCC.equals("VP8X") && payload.length == 10) {
+        } else if (fourCC.equals(WebpDirectory.CHUNK_VP8X) && payload.length == 10) {
             RandomAccessReader reader = new ByteArrayReader(payload);
             reader.setMotorolaByteOrder(false);
 
@@ -95,7 +101,6 @@ public class WebpRiffHandler implements RiffHandler
                 int widthMinusOne = reader.getInt24(4);
                 int heightMinusOne = reader.getInt24(7);
 
-                WebpDirectory directory = new WebpDirectory();
                 directory.setInt(WebpDirectory.TAG_IMAGE_WIDTH, widthMinusOne + 1);
                 directory.setInt(WebpDirectory.TAG_IMAGE_HEIGHT, heightMinusOne + 1);
                 directory.setBoolean(WebpDirectory.TAG_HAS_ALPHA, hasAlpha);
@@ -106,7 +111,7 @@ public class WebpRiffHandler implements RiffHandler
             } catch (IOException e) {
                 e.printStackTrace(System.err);
             }
-        } else if (fourCC.equals("VP8L") && payload.length > 4) {
+        } else if (fourCC.equals(WebpDirectory.CHUNK_VP8L) && payload.length > 4) {
             RandomAccessReader reader = new ByteArrayReader(payload);
             reader.setMotorolaByteOrder(false);
 
@@ -125,7 +130,6 @@ public class WebpRiffHandler implements RiffHandler
                 // 14 bits for height
                 int heightMinusOne = (b4 & 0x0F) << 10 | b3 << 2 | (b2 & 0xC0) >> 6;
 
-                WebpDirectory directory = new WebpDirectory();
                 directory.setInt(WebpDirectory.TAG_IMAGE_WIDTH, widthMinusOne + 1);
                 directory.setInt(WebpDirectory.TAG_IMAGE_HEIGHT, heightMinusOne + 1);
 
@@ -134,7 +138,7 @@ public class WebpRiffHandler implements RiffHandler
             } catch (IOException e) {
                 e.printStackTrace(System.err);
             }
-        } else if (fourCC.equals("VP8 ") && payload.length > 9) {
+        } else if (fourCC.equals(WebpDirectory.CHUNK_VP8) && payload.length > 9) {
             RandomAccessReader reader = new ByteArrayReader(payload);
             reader.setMotorolaByteOrder(false);
 
@@ -150,14 +154,13 @@ public class WebpRiffHandler implements RiffHandler
                 int width = reader.getUInt16(6);
                 int height = reader.getUInt16(8);
 
-                WebpDirectory directory = new WebpDirectory();
                 directory.setInt(WebpDirectory.TAG_IMAGE_WIDTH, width);
                 directory.setInt(WebpDirectory.TAG_IMAGE_HEIGHT, height);
 
                 _metadata.addDirectory(directory);
 
-            } catch (IOException e) {
-                e.printStackTrace(System.err);
+            } catch (IOException ex) {
+                directory.addError(ex.getMessage());
             }
         }
     }

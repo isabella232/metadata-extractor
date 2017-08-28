@@ -21,10 +21,15 @@
 package com.drew.imaging;
 
 import com.drew.lang.ByteTrie;
+import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.avi.AviDirectory;
+import com.drew.metadata.wav.WavDirectory;
+import com.drew.metadata.webp.WebpDirectory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Examines the a file's first bytes and estimates the file's type.
@@ -62,7 +67,14 @@ public class FileTypeDetector
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x02, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x03, 0x01});
         _root.addPath(FileType.Pcx, new byte[]{0x0A, 0x05, 0x01});
+        _root.addPath(FileType.Wav, "WAVE".getBytes());
+        _root.addPath(FileType.Avi, "AVI ".getBytes());
+        _root.addPath(FileType.Webp, "WEBP".getBytes());
+        _root.addPath(FileType.Iff, "FORM".getBytes());
         _root.addPath(FileType.Riff, "RIFF".getBytes());
+        _root.addPath(FileType.Aiff, "AIFF".getBytes()); // Should be FORM....AIFF
+        _root.addPath(FileType.Aiff, "AIFC".getBytes()); // Compressed form of AIFF
+
         _root.addPath(FileType.Arw, "II".getBytes(), new byte[]{0x2a, 0x00, 0x08, 0x00});
         _root.addPath(FileType.Crw, "II".getBytes(), new byte[]{0x1a, 0x00, 0x00, 0x00}, "HEAPCCDR".getBytes());
         _root.addPath(FileType.Cr2, "II".getBytes(), new byte[]{0x2a, 0x00, 0x10, 0x00, 0x00, 0x00, 0x43, 0x52});
@@ -186,6 +198,7 @@ public class FileTypeDetector
     {
         switch (fileType) {
             case Riff:
+            case Iff:
                 return detectFileType(inputStream, 8);
             case Tiff:
             default:

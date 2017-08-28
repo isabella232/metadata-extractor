@@ -20,6 +20,8 @@
  */
 package com.drew.imaging;
 
+import com.drew.imaging.avi.AviMetadataReader;
+import com.drew.imaging.aiff.AiffMetadataReader;
 import com.drew.imaging.bmp.BmpMetadataReader;
 import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
@@ -33,6 +35,7 @@ import com.drew.imaging.png.PngMetadataReader;
 import com.drew.imaging.psd.PsdMetadataReader;
 import com.drew.imaging.raf.RafMetadataReader;
 import com.drew.imaging.tiff.TiffMetadataReader;
+import com.drew.imaging.wav.WavMetadataReader;
 import com.drew.imaging.webp.WebpMetadataReader;
 import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.StringUtil;
@@ -153,10 +156,16 @@ public class ImageMetadataReader
                 return IcoMetadataReader.readMetadata(inputStream);
             case Pcx:
                 return PcxMetadataReader.readMetadata(inputStream);
-            case Riff:
+            case Webp:
                 return WebpMetadataReader.readMetadata(inputStream);
             case Raf:
                 return RafMetadataReader.readMetadata(inputStream);
+            case Avi:
+                return AviMetadataReader.readMetadata(inputStream);
+            case Wav:
+                return WavMetadataReader.readMetadata(inputStream);
+            case Aiff:
+                return AiffMetadataReader.readMetadata(inputStream);
             case Mov:
                 return QtMetadataReader.readMetadata(inputStream);
             case Mp4:
