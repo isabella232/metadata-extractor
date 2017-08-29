@@ -19,9 +19,11 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
             case (Mp4VideoDirectory.TAG_WIDTH):
                 return getPixelDescription(tagType);
             case (Mp4VideoDirectory.TAG_DEPTH):
-                return getDepthDescription(tagType);
+                return getDepthDescription();
             case (Mp4VideoDirectory.TAG_COLOR_TABLE):
-                return getColorTableDescription(tagType);
+                return getColorTableDescription();
+            case (Mp4VideoDirectory.TAG_GRAPHICS_MODE):
+                return getGraphicsModeDescription();
             default:
                 return super.getDescription(tagType);
         }
@@ -32,9 +34,9 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
         return _directory.getString(tagType) + " pixels";
     }
 
-    private String getDepthDescription(int tagType)
+    private String getDepthDescription()
     {
-        int depth = _directory.getInteger(tagType);
+        int depth = _directory.getInteger(Mp4VideoDirectory.TAG_DEPTH);
         switch (depth) {
             case (40):
             case (36):
@@ -45,9 +47,9 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
         }
     }
 
-    private String getColorTableDescription(int tagType)
+    private String getColorTableDescription()
     {
-        int colorTableId = _directory.getInteger(tagType);
+        int colorTableId = _directory.getInteger(Mp4VideoDirectory.TAG_COLOR_TABLE);
 
         switch (colorTableId) {
             case (-1):
@@ -60,6 +62,36 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
                 return "Color table within file";
             default:
                 return Integer.toString(colorTableId);
+        }
+    }
+
+    private String getGraphicsModeDescription()
+    {
+        Integer graphicsMode = _directory.getInteger(Mp4VideoDirectory.TAG_GRAPHICS_MODE);
+        if (graphicsMode == null)
+            return null;
+
+        switch (graphicsMode) {
+            case (0x00):
+                return "Copy";
+            case (0x40):
+                return "Dither copy";
+            case (0x20):
+                return "Blend";
+            case (0x24):
+                return "Transparent";
+            case (0x100):
+                return "Straight alpha";
+            case (0x101):
+                return "Premul white alpha";
+            case (0x102):
+                return "Premul black alpha";
+            case (0x104):
+                return "Straight alpha blend";
+            case (0x103):
+                return "Composition (dither copy)";
+            default:
+                return "Unknown (" + graphicsMode + ")";
         }
     }
 }

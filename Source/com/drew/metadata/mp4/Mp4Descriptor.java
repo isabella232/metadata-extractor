@@ -19,17 +19,19 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
     {
         switch (tagType) {
             case (Mp4Directory.TAG_MAJOR_BRAND):
-                return getMajorBrandDescription(tagType);
+                return getMajorBrandDescription();
             case (Mp4Directory.TAG_COMPATIBLE_BRANDS):
-                return getCompatibleBrandsDescription(tagType);
+                return getCompatibleBrandsDescription();
+            case (Mp4Directory.TAG_DURATION):
+                return getDurationDescription();
             default:
                 return _directory.getString(tagType);
         }
     }
 
-    private String getMajorBrandDescription(int tagType)
+    private String getMajorBrandDescription()
     {
-        String majorBrandKey = new String(_directory.getByteArray(tagType));
+        String majorBrandKey = new String(_directory.getByteArray(Mp4Directory.TAG_MAJOR_BRAND));
         String majorBrandValue = Mp4Dictionary.lookup(Mp4Directory.TAG_MAJOR_BRAND, majorBrandKey);
         if (majorBrandValue != null) {
             return majorBrandValue;
@@ -38,9 +40,9 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
         }
     }
 
-    private String getCompatibleBrandsDescription(int tagType)
+    private String getCompatibleBrandsDescription()
     {
-        String[] compatibleBrandKeys = _directory.getStringArray(tagType);
+        String[] compatibleBrandKeys = _directory.getStringArray(Mp4Directory.TAG_COMPATIBLE_BRANDS);
         ArrayList<String> compatibleBrandsValues = new ArrayList<String>();
         for (String compatibleBrandsKey : compatibleBrandKeys) {
             String compatibleBrandsValue = Mp4Dictionary.lookup(Mp4Directory.TAG_MAJOR_BRAND, compatibleBrandsKey);
@@ -51,5 +53,18 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
             }
         }
         return Arrays.toString(compatibleBrandsValues.toArray());
+    }
+
+    private String getDurationDescription()
+    {
+        Long durationObject = _directory.getLongObject(Mp4Directory.TAG_DURATION);
+        if (durationObject == null)
+            return null;
+        long duration = durationObject;
+
+        Integer hours = (int)duration / (int)(Math.pow(60, 2));
+        Integer minutes = ((int)duration / (int)(Math.pow(60, 1))) - (hours * 60);
+        Integer seconds = (int)Math.ceil((duration / (Math.pow(60, 0))) - (minutes * 60));
+        return String.format("%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
     }
 }
