@@ -1,6 +1,15 @@
 package com.drew.metadata.mp4;
 
+import com.drew.lang.SequentialReader;
+import com.drew.metadata.mp4.boxes.Box;
+import com.drew.metadata.mp4.boxes.FileTypeBox;
+import com.drew.metadata.mp4.boxes.MovieHeaderBox;
+import com.drew.metadata.mp4.boxes.VideoMediaHeaderBox;
+import org.apache.pdfbox.io.SequentialRead;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Payton Garland
@@ -31,5 +40,31 @@ public class Mp4BoxTypes
         _boxList.add(BOX_SAMPLE_DESCRIPTION);
         _boxList.add(BOX_TIME_TO_SAMPLE);
         _boxList.add(BOX_MEDIA_HEADER);
+    }
+
+    public static Box createBox(SequentialReader reader, Box box)
+    {
+        try {
+            if (box.getType().equals(BOX_FILE_TYPE)) {
+                return new FileTypeBox(reader, box);
+            } else if (box.getType().equals(BOX_MOVIE_HEADER)) {
+                return new MovieHeaderBox(reader, box);
+            } else if (box.getType().equals(BOX_VIDEO_MEDIA_INFO)) {
+                return new VideoMediaHeaderBox(reader, box);
+            }
+        } catch (IOException ignored) {
+
+        }
+        return box;
+    }
+
+    public static boolean contains(Box box)
+    {
+        for (String s : _boxList) {
+            if (box.getType().equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package com.drew.metadata.mp4;
 
+import com.drew.metadata.mp4.boxes.Box;
+
 import java.util.ArrayList;
 
 /**
@@ -35,5 +37,15 @@ public class Mp4ContainerTypes
         _containerList.add(BOX_MEDIA_TEXT);
         _containerList.add(BOX_MEDIA_SUBTITLE);
         _containerList.add(BOX_MEDIA_NULL);
+    }
+
+    public static boolean contains(Box box)
+    {
+        for (String s : _containerList) {
+            if (box.getType().contains(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

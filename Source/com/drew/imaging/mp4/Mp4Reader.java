@@ -1,7 +1,11 @@
 package com.drew.imaging.mp4;
 
+import com.drew.lang.SequentialByteArrayReader;
 import com.drew.lang.StreamReader;
 import com.drew.metadata.Metadata;
+import com.drew.metadata.mp4.Container;
+import com.drew.metadata.mp4.Mp4BoxTypes;
+import com.drew.metadata.mp4.Mp4ContainerTypes;
 import com.drew.metadata.mp4.boxes.Box;
 
 import java.io.IOException;
@@ -18,7 +22,7 @@ public class Mp4Reader
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        boolean printVisited = false;
+        boolean printVisited = true;
         tabCount = 0;
 
         if (printVisited) {
@@ -27,10 +31,12 @@ public class Mp4Reader
             System.out.println("_____________________________________________________");
         }
 
-        processBoxes(reader, -1, handler, printVisited);
+        Container mp4 = new Container("ROOT", 0);
+        processBoxes(reader, -1, mp4, printVisited);
+        System.out.println("here");
     }
 
-    private void processBoxes(StreamReader reader, long atomEnd, Mp4Handler mp4handler, boolean printVisited)
+    private void processBoxes(StreamReader reader, long atomEnd, Container parent, boolean printVisited)
     {
         try {
             long startPos = reader.getPosition();
@@ -42,7 +48,7 @@ public class Mp4Reader
                  * Determine if fourCC is container/atom and process accordingly
                  * Unknown atoms will be skipped
                  */
-                if (mp4handler.shouldAcceptContainer(box)) {
+                if (Mp4ContainerTypes.contains(box)) {
 
                     if (printVisited) {
                         for (int i = 0; i < tabCount; i++) {
@@ -52,14 +58,14 @@ public class Mp4Reader
                         tabCount++;
                     }
 
-                    mp4handler.processContainer(box);
-                    processBoxes(reader, box.getSize() + reader.getPosition() - 8, mp4handler, printVisited);
-
+                    Container container = new Container(box);
+                    parent.addContainer(container);
+                    processBoxes(reader, box.getSize() + reader.getPosition() - 8, container, printVisited);
                     if (printVisited) {
                         tabCount--;
                     }
 
-                } else if (mp4handler.shouldAcceptBox(box)) {
+                } else if (Mp4BoxTypes.contains(box)) {
 
                     if (printVisited) {
                         for (int i = 0; i < tabCount; i++) {
@@ -68,7 +74,8 @@ public class Mp4Reader
                         System.out.println("  " + box.getType());
                     }
 
-                    mp4handler = mp4handler.processBox(box, reader.getBytes((int)box.getSize() - 8));
+                    SequentialByteArrayReader byteReader = new SequentialByteArrayReader(reader.getBytes((int)box.getSize() - 8));
+                    parent.addBox(Mp4BoxTypes.createBox(byteReader, box));
 
                 } else {
 
@@ -77,6 +84,8 @@ public class Mp4Reader
                     } else if (box.getSize() == -1) {
                         break;
                     }
+
+                    parent.addBox(box);
 
                     if (printVisited) {
                         for (int i = 0; i < tabCount; i++) {
