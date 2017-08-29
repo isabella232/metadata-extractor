@@ -1,17 +1,19 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import lombok.Getter;
 
 import java.io.IOException;
 
 /**
  * ISO/IED 14496-12:2015 pg.6
  */
+@Getter
 public class Box
 {
-    public long size;
-    public String type;
-    String usertype;
+    private long size;
+    private String type;
+    private String usertype;
 
     public Box(SequentialReader reader) throws IOException
     {
