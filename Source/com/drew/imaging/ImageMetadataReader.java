@@ -46,6 +46,7 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.file.FileMetadataReader;
+import com.drew.metadata.mov.MovContainerHandler;
 import com.drew.metadata.mp4.Mp4ContainerHandler;
 
 import java.io.*;
@@ -172,8 +173,7 @@ public class ImageMetadataReader
             case Aiff:
                 return AiffMetadataReader.readMetadata(inputStream);
             case Mov:
-                return new Metadata();
-//                return QtMetadataReader.readMetadata(inputStream, new MovContainerHandler());
+                return QtMetadataReader.readMetadata(inputStream, new MovContainerHandler());
             case Mp4:
                 return QtMetadataReader.readMetadata(inputStream, new Mp4ContainerHandler());
             case Heif:

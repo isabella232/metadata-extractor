@@ -1,19 +1,16 @@
 package com.drew.metadata.mov.atoms;
 
 import com.drew.lang.SequentialReader;
+import lombok.Getter;
 
 import java.io.IOException;
 
 /**
  * https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCIBHFD
  */
+@Getter
 public class HandlerReferenceAtom extends FullAtom
 {
-    public String getComponentType()
-    {
-        return componentSubtype;
-    }
-
     String componentType;
     String componentSubtype;
     String componentName;

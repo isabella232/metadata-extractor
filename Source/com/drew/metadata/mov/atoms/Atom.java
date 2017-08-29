@@ -1,13 +1,17 @@
 package com.drew.metadata.mov.atoms;
 
+import com.drew.imaging.quicktime.QtAtom;
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
+import lombok.Getter;
 
 import java.io.IOException;
 
 /**
  * https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html#//apple_ref/doc/uid/TP40000939-CH203-38190
  */
-public class Atom
+@Getter
+public class Atom implements QtAtom
 {
     public long size;
     public String type;
@@ -27,5 +31,11 @@ public class Atom
     {
         this.size = atom.size;
         this.type = atom.type;
+    }
+
+    @Override
+    public void addMetadata(Directory directory)
+    {
+
     }
 }
