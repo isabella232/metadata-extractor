@@ -1,7 +1,9 @@
 package com.drew.metadata.mp4.boxes;
 
+import com.drew.imaging.quicktime.QtAtom;
 import com.drew.lang.SequentialReader;
 import com.drew.metadata.Directory;
+import com.drew.metadata.mov.QtAtomHandler;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +14,7 @@ import java.io.IOException;
  */
 @Getter
 @NoArgsConstructor
-public class Box
+public class Box implements QtAtom
 {
     private long size;
     private String type;

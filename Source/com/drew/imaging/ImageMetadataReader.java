@@ -25,11 +25,9 @@ import com.drew.imaging.aiff.AiffMetadataReader;
 import com.drew.imaging.bmp.BmpMetadataReader;
 import com.drew.imaging.eps.EpsMetadataReader;
 import com.drew.imaging.gif.GifMetadataReader;
-import com.drew.imaging.heif.HeifMetadataReader;
 import com.drew.imaging.ico.IcoMetadataReader;
 import com.drew.imaging.indd.InddMetadataReader;
 import com.drew.imaging.jpeg.JpegMetadataReader;
-import com.drew.imaging.mp4.Mp4MetadataReader;
 import com.drew.imaging.quicktime.QtMetadataReader;
 import com.drew.imaging.pcx.PcxMetadataReader;
 import com.drew.imaging.pdf.PdfMetadataReader;
@@ -39,8 +37,6 @@ import com.drew.imaging.raf.RafMetadataReader;
 import com.drew.imaging.tiff.TiffMetadataReader;
 import com.drew.imaging.wav.WavMetadataReader;
 import com.drew.imaging.webp.WebpMetadataReader;
-import com.drew.imaging.zip.IndesignPackageFilter;
-import com.drew.imaging.zip.ZipFileFilter;
 import com.drew.lang.RandomAccessStreamReader;
 import com.drew.lang.StringUtil;
 import com.drew.lang.annotations.NotNull;
@@ -50,6 +46,7 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.file.FileMetadataReader;
+import com.drew.metadata.mp4.Mp4ContainerHandler;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -175,11 +172,13 @@ public class ImageMetadataReader
             case Aiff:
                 return AiffMetadataReader.readMetadata(inputStream);
             case Mov:
-                return QtMetadataReader.readMetadata(inputStream);
+                return new Metadata();
+//                return QtMetadataReader.readMetadata(inputStream, new MovContainerHandler());
             case Mp4:
-                return Mp4MetadataReader.readMetadata(inputStream);
+                return QtMetadataReader.readMetadata(inputStream, new Mp4ContainerHandler());
             case Heif:
-                return HeifMetadataReader.readMetadata(inputStream);
+                return new Metadata();
+//                return QtMetadataReader.readMetadata(inputStream, new HeifContainerHandler());
             case AdobeEps:
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);
