@@ -2,6 +2,7 @@ package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
 import com.drew.lang.annotations.NotNull;
+import com.drew.metadata.mp4.Container;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class BoxFactory
     public static final String BOX_MEDIA_HEADER                     = "mdhd";
     public static final String BOX_TRACK_HEADER                     = "tkhd";
 
+    public static String currentType = "";
+
     public static ArrayList<String> _boxList = new ArrayList<String>();
 
     static {
@@ -40,7 +43,7 @@ public class BoxFactory
         _boxList.add(BOX_TRACK_HEADER);
     }
 
-    public static Box getBox(@NotNull SequentialReader reader, @NotNull Box box)
+    public static Box getBox(@NotNull SequentialReader reader, @NotNull Box box, @NotNull Container parent)
     {
         try {
             if (box.getType().equals(BOX_FILE_TYPE)) {
@@ -58,13 +61,25 @@ public class BoxFactory
             } else if (box.getType().equals(BOX_HANDLER)) {
                 return new HandlerBox(reader, box);
             } else if (box.getType().equals(BOX_SAMPLE_DESCRIPTION)) {
-                return box;
+                if (parent.getParent() != null &&
+                    parent.getParent().getParent() != null) {
+                    HandlerBox handlerBox = parent.getParent().getParent().getFirstBoxOfType(HandlerBox.class);
+                    if (handlerBox.getHandlerType().equals("vide")) {
+                        return new VisualSampleEntry(reader, box);
+                    } else if (handlerBox.getHandlerType().equals("soun")) {
+                        return new AudioSampleEntry(reader, box);
+                    } else {
+                        return new SampleEntry(reader, box);
+                    }
+                }
             } else if (box.getType().equals(BOX_TIME_TO_SAMPLE)) {
                 return new TimeToSampleBox(reader, box);
             } else if (box.getType().equals(BOX_MEDIA_HEADER)) {
                 return new MediaHeaderBox(reader, box);
             } else if (box.getType().equals(BOX_TRACK_HEADER)) {
                 return new TrackHeaderBox(reader, box);
+            } else if (box.getType().equals(BOX_TIME_TO_SAMPLE)) {
+                return new TimeToSampleBox(reader, box);
             }
         } catch (IOException ignored) {
 

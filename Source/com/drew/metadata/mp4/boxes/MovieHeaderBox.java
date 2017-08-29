@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.Mp4Directory;
 import lombok.Getter;
 
@@ -55,7 +56,8 @@ public class MovieHeaderBox extends FullBox
         nextTrackID = reader.getUInt32();
     }
 
-    public void addMetadata(Mp4Directory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         // Get creation/modification times
         Calendar calendar = Calendar.getInstance();

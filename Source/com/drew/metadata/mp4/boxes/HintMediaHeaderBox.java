@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.media.Mp4HintDirectory;
 import lombok.Getter;
 
@@ -27,7 +28,8 @@ public class HintMediaHeaderBox extends FullBox
         avgbitrate = reader.getUInt32();
     }
 
-    public void addMetadata(Mp4HintDirectory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         directory.setInt(Mp4HintDirectory.TAG_MAX_PDU_SIZE, maxPDUsize);
         directory.setInt(Mp4HintDirectory.TAG_AVERAGE_PDU_SIZE, avgPDUsize);

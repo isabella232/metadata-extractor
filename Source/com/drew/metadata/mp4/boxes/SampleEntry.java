@@ -15,6 +15,8 @@ public class SampleEntry extends FullBox
     long sampleDescriptionSize;
     String format;
     int dataReferenceIndex;
+    VisualSampleEntry visualSampleEntry;
+    AudioSampleEntry audioSampleEntry;
 
     public SampleEntry(SequentialReader reader, Box box) throws IOException
     {

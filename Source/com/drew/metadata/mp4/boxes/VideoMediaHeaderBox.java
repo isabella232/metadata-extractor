@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.media.Mp4VideoDirectory;
 import lombok.Getter;
 
@@ -23,7 +24,8 @@ public class VideoMediaHeaderBox extends FullBox
         opcolor = new int[]{reader.getUInt16(), reader.getUInt16(), reader.getUInt16()};
     }
 
-    public void addMetadata(Mp4VideoDirectory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         directory.setIntArray(Mp4VideoDirectory.TAG_OPCOLOR, opcolor);
         directory.setInt(Mp4VideoDirectory.TAG_GRAPHICS_MODE, graphicsMode);

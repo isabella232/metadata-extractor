@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.media.Mp4SoundDirectory;
 import lombok.Getter;
 
@@ -31,7 +32,8 @@ public class AudioSampleEntry extends SampleEntry
         // More boxes as needed
     }
 
-    public void addMetadata(Mp4SoundDirectory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         directory.setInt(Mp4SoundDirectory.TAG_NUMBER_OF_CHANNELS, channelcount);
         directory.setInt(Mp4SoundDirectory.TAG_AUDIO_SAMPLE_SIZE, samplesize);

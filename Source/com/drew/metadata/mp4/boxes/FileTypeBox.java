@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.Mp4Dictionary;
 import com.drew.metadata.mp4.Mp4Directory;
 import lombok.Getter;
@@ -30,7 +31,8 @@ public class FileTypeBox extends Box
         }
     }
 
-    public void addMetadata(Mp4Directory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         directory.setString(Mp4Directory.TAG_MAJOR_BRAND, majorBrand);
         directory.setLong(Mp4Directory.TAG_MINOR_VERSION, minorVersion);

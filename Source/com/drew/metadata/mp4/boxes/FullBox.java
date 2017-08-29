@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -20,5 +21,11 @@ public class FullBox extends Box
 
         version = reader.getUInt8();
         flags = reader.getBytes(3);
+    }
+
+    @Override
+    public void addMetadata(Directory directory)
+    {
+
     }
 }

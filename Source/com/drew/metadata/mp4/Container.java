@@ -22,19 +22,22 @@ import java.util.List;
 @Getter
 public final class Container
 {
-    public final String type;
-    public final long size;
+    private final String type;
+    private final long size;
+    private final Container parent;
 
-    public Container(String type, long size)
+    public Container(String type, long size, Container parent)
     {
         this.type = type;
         this.size = size;
+        this.parent = parent;
     }
 
-    public Container(Box box)
+    public Container(Box box, Container parent)
     {
         this.type = box.getType();
         this.size = box.getSize();
+        this.parent = parent;
     }
 
     /**
@@ -149,10 +152,20 @@ public final class Container
     @SuppressWarnings("unchecked")
     public <T extends Box> T getFirstBoxOfType(@NotNull Class<T> type)
     {
-        for (Box box : _boxes) {
+        return getFirstBoxOfTypeHelper(type, this);
+    }
+
+    private <T extends Box> T getFirstBoxOfTypeHelper(@NotNull Class<T> type, @NotNull Container parent)
+    {
+        for (Box box : parent.getBoxes()) {
             if (type.isAssignableFrom(box.getClass()))
                 return (T)box;
         }
+
+        for (Container container : parent.getContainers()) {
+            return getFirstBoxOfTypeHelper(type, container);
+        }
+
         return null;
     }
 
@@ -183,10 +196,20 @@ public final class Container
      */
     public boolean containsBoxOfType(Class<? extends Box> type)
     {
-        for (Box box : _boxes) {
+        return containsBoxOfTypeHelper(type, this);
+    }
+
+    private boolean containsBoxOfTypeHelper(Class<? extends Box> type, Container parent)
+    {
+        for (Box box : parent.getBoxes()) {
             if (type.isAssignableFrom(box.getClass()))
                 return true;
         }
+
+        for (Container container : parent.getContainers()) {
+            return containsBoxOfTypeHelper(type, container);
+        }
+
         return false;
     }
 
@@ -245,5 +268,15 @@ public final class Container
 
             tabCount--;
         }
+    }
+
+    enum TrackType
+    {
+        Video,
+        Sound,
+        Hint,
+        Meta,
+        Text,
+        Unknown
     }
 }

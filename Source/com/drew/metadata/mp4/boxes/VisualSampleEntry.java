@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.media.Mp4VideoDirectory;
 import lombok.Getter;
 
@@ -45,7 +46,8 @@ public class VisualSampleEntry extends SampleEntry
         reader.skip(2); // Pre-defined
     }
 
-    public void addMetadata(Mp4VideoDirectory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
         directory.setInt(Mp4VideoDirectory.TAG_WIDTH, width);
         directory.setInt(Mp4VideoDirectory.TAG_HEIGHT, height);

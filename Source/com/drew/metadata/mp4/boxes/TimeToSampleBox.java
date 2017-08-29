@@ -1,6 +1,7 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import com.drew.metadata.mp4.media.Mp4SoundDirectory;
 import com.drew.metadata.mp4.media.Mp4VideoDirectory;
 import lombok.Getter;
@@ -28,15 +29,14 @@ public class TimeToSampleBox extends FullBox
         }
     }
 
-    public void addMetadata(Mp4VideoDirectory directory)
+    @Override
+    public void addMetadata(Directory directory)
     {
+
     }
 
-    public void addMetadata(Mp4SoundDirectory directory)
-    {
-    }
-
-    class EntryCount
+    @Getter
+    public class EntryCount
     {
         long sampleCount;
         long sampleDelta;

@@ -1,7 +1,9 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import com.drew.metadata.Directory;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
  * ISO/IED 14496-12:2015 pg.6
  */
 @Getter
+@NoArgsConstructor
 public class Box
 {
     private long size;
@@ -34,5 +37,10 @@ public class Box
         this.size = box.getSize();
         this.type = box.getType();
         this.usertype = box.usertype;
+    }
+
+    public void addMetadata(Directory directory)
+    {
+
     }
 }
