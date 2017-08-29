@@ -22,6 +22,7 @@ public class BoxFactory
     public static final String BOX_SAMPLE_DESCRIPTION               = "stsd";
     public static final String BOX_TIME_TO_SAMPLE                   = "stts";
     public static final String BOX_MEDIA_HEADER                     = "mdhd";
+    public static final String BOX_TRACK_HEADER                     = "tkhd";
 
     public static ArrayList<String> _boxList = new ArrayList<String>();
 
@@ -36,6 +37,7 @@ public class BoxFactory
         _boxList.add(BOX_SAMPLE_DESCRIPTION);
         _boxList.add(BOX_TIME_TO_SAMPLE);
         _boxList.add(BOX_MEDIA_HEADER);
+        _boxList.add(BOX_TRACK_HEADER);
     }
 
     public static Box getBox(@NotNull SequentialReader reader, @NotNull Box box)
@@ -61,6 +63,8 @@ public class BoxFactory
                 return new TimeToSampleBox(reader, box);
             } else if (box.getType().equals(BOX_MEDIA_HEADER)) {
                 return new MediaHeaderBox(reader, box);
+            } else if (box.getType().equals(BOX_TRACK_HEADER)) {
+                return new TrackHeaderBox(reader, box);
             }
         } catch (IOException ignored) {
 

@@ -2,6 +2,7 @@ package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
 import com.drew.metadata.mp4.Mp4Directory;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -10,6 +11,7 @@ import java.util.Date;
 /**
  * ISO/IED 14496-12:2015 pg.23
  */
+@Getter
 public class MovieHeaderBox extends FullBox
 {
     protected long creationTime;

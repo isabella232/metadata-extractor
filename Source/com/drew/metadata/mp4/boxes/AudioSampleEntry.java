@@ -2,12 +2,14 @@ package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
 import com.drew.metadata.mp4.media.Mp4SoundDirectory;
+import lombok.Getter;
 
 import java.io.IOException;
 
 /**
  * ISO/IED 14496-12:2015 pg.161
  */
+@Getter
 public class AudioSampleEntry extends SampleEntry
 {
     int channelcount;

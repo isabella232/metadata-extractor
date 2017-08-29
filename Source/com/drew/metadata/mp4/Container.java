@@ -165,7 +165,7 @@ public final class Container
      */
     @Nullable
     @SuppressWarnings("unchecked")
-    public Container getFistContainerOfType(@NotNull String type)
+    public Container getFirstContainerOfType(@NotNull String type)
     {
         for (Container container : _containers) {
             if (container.getType().equals(type)) {
@@ -209,8 +209,20 @@ public final class Container
     public void printContainer()
     {
         int tabCount = 0;
+        for (Box box : this.getBoxes()) {
+            for (int i = 0; i < tabCount; i++) {
+                System.out.print("   " + i + "   |");
+            }
+            System.out.println("  " + box.getType());
+        }
         for (Container container : this.getContainers()) {
+            for (int i = 0; i < tabCount; i++) {
+                System.out.print("   " + i + "   |");
+            }
+            System.out.println(" [" + container.getType() + "]");
+            tabCount++;
             printContainerHelper(container, tabCount);
+            tabCount--;
         }
     }
 

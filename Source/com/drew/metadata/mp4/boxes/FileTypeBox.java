@@ -3,6 +3,7 @@ package com.drew.metadata.mp4.boxes;
 import com.drew.lang.SequentialReader;
 import com.drew.metadata.mp4.Mp4Dictionary;
 import com.drew.metadata.mp4.Mp4Directory;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 /**
  * ISO/IED 14496-12:2015 pg.8
  */
+@Getter
 public class FileTypeBox extends Box
 {
     String majorBrand;

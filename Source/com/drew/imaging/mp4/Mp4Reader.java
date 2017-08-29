@@ -2,11 +2,13 @@ package com.drew.imaging.mp4;
 
 import com.drew.lang.SequentialByteArrayReader;
 import com.drew.lang.StreamReader;
+import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.mp4.Container;
 import com.drew.metadata.mp4.Mp4BoxTypes;
 import com.drew.metadata.mp4.Mp4ContainerTypes;
-import com.drew.metadata.mp4.boxes.Box;
+import com.drew.metadata.mp4.Mp4Directory;
+import com.drew.metadata.mp4.boxes.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,11 +23,11 @@ public class Mp4Reader
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        Container mp4 = new Container("ROOT", 0);
+        Container mp4 = new Container("root", 0);
         processContainer(reader, -1, mp4);
         mp4.printContainer();
 
-        System.out.println("here");
+        addMetadata(metadata, mp4);
     }
 
     private void processContainer(StreamReader reader, long atomEnd, Container parent)
@@ -45,10 +47,10 @@ public class Mp4Reader
                     parent.addContainer(container);
                     processContainer(reader, box.getSize() + reader.getPosition() - 8, container);
 
-                } else if (Mp4BoxTypes.contains(box)) {
+                } else if (BoxFactory.contains(box)) {
 
                     SequentialByteArrayReader byteReader = new SequentialByteArrayReader(reader.getBytes((int)box.getSize() - 8));
-                    parent.addBox(Mp4BoxTypes.createBox(byteReader, box));
+                    parent.addBox(BoxFactory.getBox(byteReader, box));
 
                 } else {
 
@@ -66,4 +68,31 @@ public class Mp4Reader
             System.out.println(ignored.getMessage());
         }
     }
+
+    private void addMetadata(@NotNull Metadata metadata, @NotNull Container container)
+    {
+        Mp4Directory directory = new Mp4Directory();
+        if (container.containsBoxOfType(FileTypeBox.class)) {
+            FileTypeBox ftyp = container.getFirstBoxOfType(FileTypeBox.class);
+            ftyp.addMetadata(directory);
+        }
+    }
+
+    private Mp4Directory getBaseMetadata(@NotNull Container container)
+    {
+        Mp4Directory directory = new Mp4Directory();
+
+        if (container.containsBoxOfType(FileTypeBox.class)) {
+            FileTypeBox fileTypeBox = container.getFirstBoxOfType(FileTypeBox.class);
+            fileTypeBox.addMetadata(directory);
+        }
+
+        if (container.containsBoxOfType(MovieHeaderBox.class)) {
+            MovieHeaderBox movieHeaderBox = container.getFirstBoxOfType(MovieHeaderBox.class);
+            movieHeaderBox.addMetadata(directory);
+        }
+
+        return directory;
+    }
+
 }

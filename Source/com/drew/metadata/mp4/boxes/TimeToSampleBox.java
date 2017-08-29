@@ -3,6 +3,7 @@ package com.drew.metadata.mp4.boxes;
 import com.drew.lang.SequentialReader;
 import com.drew.metadata.mp4.media.Mp4SoundDirectory;
 import com.drew.metadata.mp4.media.Mp4VideoDirectory;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 /**
  * ISO/IED 14496-12:2015 pg.37
  */
+@Getter
 public class TimeToSampleBox extends FullBox
 {
     long entryCount;

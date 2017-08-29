@@ -1,12 +1,14 @@
 package com.drew.metadata.mp4.boxes;
 
 import com.drew.lang.SequentialReader;
+import lombok.Getter;
 
 import java.io.IOException;
 
 /**
  * ISO/IED 14496-12:2015 pg.33
  */
+@Getter
 public class SampleEntry extends FullBox
 {
     long numberOfEntries;
