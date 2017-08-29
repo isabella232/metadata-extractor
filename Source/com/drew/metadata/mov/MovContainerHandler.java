@@ -8,11 +8,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.mov.atoms.*;
 import com.drew.metadata.mov.media.QtSoundDirectory;
 import com.drew.metadata.mov.media.QtVideoDirectory;
-import com.drew.metadata.mp4.Mp4Directory;
 import com.drew.metadata.mp4.TrackType;
-import com.drew.metadata.mp4.boxes.*;
-import com.drew.metadata.mp4.media.Mp4SoundDirectory;
-import com.drew.metadata.mp4.media.Mp4VideoDirectory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +23,7 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
     public void addMetadata(Metadata metadata, QtContainer root)
     {
         QtDirectory directory = new QtDirectory();
+        metadata.addDirectory(directory);
         if (root.containsQtAtomOfType(FileTypeCompatibilityAtom.class)) {
             FileTypeCompatibilityAtom ftyp = root.getFirstQtAtomOfType(FileTypeCompatibilityAtom.class);
             ftyp.addMetadata(directory);
@@ -61,7 +58,6 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
                 }
             }
         }
-        metadata.addDirectory(directory);
     }
 
     @Override
@@ -132,6 +128,35 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
     {
         QtSoundDirectory directory = new QtSoundDirectory();
 
+        MediaHeaderAtom mdhd = null;
+        HandlerReferenceAtom hdlr = null;
+        SoundInformationMediaHeaderAtom smhd = null;
+        SoundSampleDescriptionAtom stsd = null;
+        TimeToSampleAtom stts = null;
+
+        if (track.containsQtAtomOfType(MediaHeaderAtom.class)) {
+
+        }
+
+        if (track.containsQtAtomOfType(HandlerReferenceAtom.class)) {
+
+        }
+
+        if (track.containsQtAtomOfType(SoundInformationMediaHeaderAtom.class)) {
+            smhd = track.getFirstQtAtomOfType(SoundInformationMediaHeaderAtom.class);
+            smhd.addMetadata(directory);
+        }
+
+        if (track.containsQtAtomOfType(SoundSampleDescriptionAtom.class)) {
+            stsd = track.getFirstQtAtomOfType(SoundSampleDescriptionAtom.class);
+            stsd.addMetadata(directory);
+        }
+
+        if (track.containsQtAtomOfType(TimeToSampleAtom.class)) {
+            stts = track.getFirstQtAtomOfType(TimeToSampleAtom.class);
+            stts.addMetadata(directory);
+        }
+
         return directory;
     }
 
@@ -139,29 +164,48 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
     {
         QtVideoDirectory directory = new QtVideoDirectory();
 
+        VideoInformationMediaHeaderAtom vmhd = null;
+        VideoSampleDescriptionAtom stsd = null;
+        TimeToSampleAtom stts = null;
+
+        if (track.containsQtAtomOfType(VideoInformationMediaHeaderAtom.class)) {
+            vmhd = track.getFirstQtAtomOfType(VideoInformationMediaHeaderAtom.class);
+            vmhd.addMetadata(directory);
+        }
+
+        if (track.containsQtAtomOfType(VideoSampleDescriptionAtom.class)) {
+            stsd = track.getFirstQtAtomOfType(VideoSampleDescriptionAtom.class);
+            stsd.addMetadata(directory);
+        }
+
+        if (track.containsQtAtomOfType(TimeToSampleAtom.class)) {
+            stts = track.getFirstQtAtomOfType(TimeToSampleAtom.class);
+            stts.addMetadata(directory);
+        }
+
         return directory;
     }
 
     private TrackType getTrackType(QtContainer track)
     {
-        HandlerBox handlerBox;
+        HandlerReferenceAtom hdlr;
         if (!track.getType().equals("trak"))
             return TrackType.Unknown;
 
-        if (track.containsQtAtomOfType(HandlerBox.class))
-            handlerBox = track.getFirstQtAtomOfType(HandlerBox.class);
+        if (track.containsQtAtomOfType(HandlerReferenceAtom.class))
+            hdlr = track.getFirstQtAtomOfType(HandlerReferenceAtom.class);
         else
             return TrackType.Unknown;
 
-        if (handlerBox.getHandlerType().equals("vide")) {
+        if (hdlr.getComponentSubtype().equals("vide")) {
             return TrackType.Video;
-        } else if (handlerBox.getHandlerType().equals("soun")) {
+        } else if (hdlr.getComponentSubtype().equals("soun")) {
             return TrackType.Sound;
-        } else if (handlerBox.getHandlerType().equals("hint")) {
+        } else if (hdlr.getComponentSubtype().equals("hint")) {
             return TrackType.Hint;
-        } else if (handlerBox.getHandlerType().equals("text")) {
+        } else if (hdlr.getComponentSubtype().equals("text")) {
             return TrackType.Text;
-        } else if (handlerBox.getHandlerType().equals("meta")) {
+        } else if (hdlr.getComponentSubtype().equals("meta")) {
             return TrackType.Meta;
         } else {
             return TrackType.Unknown;
