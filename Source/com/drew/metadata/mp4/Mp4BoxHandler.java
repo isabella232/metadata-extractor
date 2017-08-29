@@ -30,19 +30,19 @@ public class Mp4BoxHandler extends Mp4Handler<Mp4Directory>
     @Override
     public boolean shouldAcceptBox(@NotNull Box box)
     {
-        return box.type.equals(Mp4BoxTypes.BOX_FILE_TYPE)
-            || box.type.equals(Mp4BoxTypes.BOX_MOVIE_HEADER)
-            || box.type.equals(Mp4BoxTypes.BOX_HANDLER)
-            || box.type.equals(Mp4BoxTypes.BOX_MEDIA_HEADER);
+        return box.getType().equals(Mp4BoxTypes.BOX_FILE_TYPE)
+            || box.getType().equals(Mp4BoxTypes.BOX_MOVIE_HEADER)
+            || box.getType().equals(Mp4BoxTypes.BOX_HANDLER)
+            || box.getType().equals(Mp4BoxTypes.BOX_MEDIA_HEADER);
     }
 
     @Override
     public boolean shouldAcceptContainer(Box box)
     {
-        return box.type.equals(Mp4ContainerTypes.BOX_TRACK)
-            || box.type.equals(Mp4ContainerTypes.BOX_METADATA)
-            || box.type.equals(Mp4ContainerTypes.BOX_MOVIE)
-            || box.type.equals(Mp4ContainerTypes.BOX_MEDIA);
+        return box.getType().equals(Mp4ContainerTypes.BOX_TRACK)
+            || box.getType().equals(Mp4ContainerTypes.BOX_METADATA)
+            || box.getType().equals(Mp4ContainerTypes.BOX_MOVIE)
+            || box.getType().equals(Mp4ContainerTypes.BOX_MEDIA);
     }
 
     @Override
@@ -50,18 +50,18 @@ public class Mp4BoxHandler extends Mp4Handler<Mp4Directory>
     {
         if (payload != null) {
             SequentialReader reader = new SequentialByteArrayReader(payload);
-            if (box.type.equals(Mp4BoxTypes.BOX_MOVIE_HEADER)) {
+            if (box.getType().equals(Mp4BoxTypes.BOX_MOVIE_HEADER)) {
                 processMovieHeader(reader, box);
-            } else if (box.type.equals(Mp4BoxTypes.BOX_FILE_TYPE)) {
+            } else if (box.getType().equals(Mp4BoxTypes.BOX_FILE_TYPE)) {
                 processFileType(reader, box);
-            } else if (box.type.equals(Mp4BoxTypes.BOX_HANDLER)) {
+            } else if (box.getType().equals(Mp4BoxTypes.BOX_HANDLER)) {
                 HandlerBox handlerBox = new HandlerBox(reader, box);
                 return handlerFactory.getHandler(handlerBox, metadata);
-            } else if (box.type.equals(Mp4BoxTypes.BOX_MEDIA_HEADER)) {
+            } else if (box.getType().equals(Mp4BoxTypes.BOX_MEDIA_HEADER)) {
                 processMediaHeader(reader, box);
             }
         } else {
-            if (box.type.equals(Mp4ContainerTypes.BOX_COMPRESSED_MOVIE)) {
+            if (box.getType().equals(Mp4ContainerTypes.BOX_COMPRESSED_MOVIE)) {
                 directory.addError("Compressed MP4 movies not supported");
             }
         }

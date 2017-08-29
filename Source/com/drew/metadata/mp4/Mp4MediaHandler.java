@@ -35,16 +35,16 @@ public abstract class Mp4MediaHandler<T extends Mp4MediaDirectory> extends Mp4Ha
     @Override
     public boolean shouldAcceptBox(Box box)
     {
-        return box.type.equals(getMediaInformation())
-            || box.type.equals(Mp4BoxTypes.BOX_SAMPLE_DESCRIPTION)
-            || box.type.equals(Mp4BoxTypes.BOX_TIME_TO_SAMPLE);
+        return box.getType().equals(getMediaInformation())
+            || box.getType().equals(Mp4BoxTypes.BOX_SAMPLE_DESCRIPTION)
+            || box.getType().equals(Mp4BoxTypes.BOX_TIME_TO_SAMPLE);
     }
 
     @Override
     public boolean shouldAcceptContainer(Box box)
     {
-        return box.type.equals(Mp4ContainerTypes.BOX_SAMPLE_TABLE)
-            || box.type.equals(Mp4ContainerTypes.BOX_MEDIA_INFORMATION);
+        return box.getType().equals(Mp4ContainerTypes.BOX_SAMPLE_TABLE)
+            || box.getType().equals(Mp4ContainerTypes.BOX_MEDIA_INFORMATION);
     }
 
     @Override
@@ -52,11 +52,11 @@ public abstract class Mp4MediaHandler<T extends Mp4MediaDirectory> extends Mp4Ha
     {
         if (payload != null) {
             SequentialReader reader = new SequentialByteArrayReader(payload);
-            if (box.type.equals(getMediaInformation())) {
+            if (box.getType().equals(getMediaInformation())) {
                 processMediaInformation(reader, box);
-            } else if (box.type.equals(Mp4BoxTypes.BOX_SAMPLE_DESCRIPTION)) {
+            } else if (box.getType().equals(Mp4BoxTypes.BOX_SAMPLE_DESCRIPTION)) {
                 processSampleDescription(reader, box);
-            } else if (box.type.equals(Mp4BoxTypes.BOX_TIME_TO_SAMPLE)) {
+            } else if (box.getType().equals(Mp4BoxTypes.BOX_TIME_TO_SAMPLE)) {
                 processTimeToSample(reader, box);
             }
         }

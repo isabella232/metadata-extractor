@@ -31,8 +31,8 @@ public class Box
 
     public Box(Box box)
     {
-        this.size = box.size;
-        this.type = box.type;
+        this.size = box.getSize();
+        this.type = box.getType();
         this.usertype = box.usertype;
     }
 }

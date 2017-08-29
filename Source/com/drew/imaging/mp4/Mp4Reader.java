@@ -48,12 +48,12 @@ public class Mp4Reader
                         for (int i = 0; i < tabCount; i++) {
                             System.out.print("   " + i + "   |");
                         }
-                        System.out.println(" [" + box.type + "]");
+                        System.out.println(" [" + box.getType() + "]");
                         tabCount++;
                     }
 
                     mp4handler.processContainer(box);
-                    processBoxes(reader, box.size + reader.getPosition() - 8, mp4handler, printVisited);
+                    processBoxes(reader, box.getSize() + reader.getPosition() - 8, mp4handler, printVisited);
 
                     if (printVisited) {
                         tabCount--;
@@ -65,16 +65,16 @@ public class Mp4Reader
                         for (int i = 0; i < tabCount; i++) {
                             System.out.print("   " + i + "   |");
                         }
-                        System.out.println("  " + box.type);
+                        System.out.println("  " + box.getType());
                     }
 
-                    mp4handler = mp4handler.processBox(box, reader.getBytes((int)box.size - 8));
+                    mp4handler = mp4handler.processBox(box, reader.getBytes((int)box.getSize() - 8));
 
                 } else {
 
-                    if (box.size > 1) {
-                        reader.skip(box.size - 8);
-                    } else if (box.size == -1) {
+                    if (box.getSize() > 1) {
+                        reader.skip(box.getSize() - 8);
+                    } else if (box.getSize() == -1) {
                         break;
                     }
 
@@ -82,7 +82,7 @@ public class Mp4Reader
                         for (int i = 0; i < tabCount; i++) {
                             System.out.print("   " + i + "   |");
                         }
-                        System.out.println(" {" + box.type + "}");
+                        System.out.println(" {" + box.getType() + "}");
                     }
 
                 }
