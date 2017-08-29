@@ -2,7 +2,8 @@ package com.drew.metadata.mp4.media;
 
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.TagDescriptor;
-import com.drew.metadata.mov.QtDescriptor;
+
+import static com.drew.metadata.mp4.media.Mp4VideoDirectory.*;
 
 public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 {
@@ -15,14 +16,14 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
     public String getDescription(int tagType)
     {
         switch (tagType) {
-            case (Mp4VideoDirectory.TAG_HEIGHT):
-            case (Mp4VideoDirectory.TAG_WIDTH):
+            case TAG_HEIGHT:
+            case TAG_WIDTH:
                 return getPixelDescription(tagType);
-            case (Mp4VideoDirectory.TAG_DEPTH):
+            case TAG_DEPTH:
                 return getDepthDescription();
-            case (Mp4VideoDirectory.TAG_COLOR_TABLE):
+            case TAG_COLOR_TABLE:
                 return getColorTableDescription();
-            case (Mp4VideoDirectory.TAG_GRAPHICS_MODE):
+            case TAG_GRAPHICS_MODE:
                 return getGraphicsModeDescription();
             default:
                 return super.getDescription(tagType);
@@ -36,7 +37,7 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private String getDepthDescription()
     {
-        int depth = _directory.getInteger(Mp4VideoDirectory.TAG_DEPTH);
+        int depth = _directory.getInteger(TAG_DEPTH);
         switch (depth) {
             case (40):
             case (36):
@@ -49,11 +50,11 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private String getColorTableDescription()
     {
-        int colorTableId = _directory.getInteger(Mp4VideoDirectory.TAG_COLOR_TABLE);
+        int colorTableId = _directory.getInteger(TAG_COLOR_TABLE);
 
         switch (colorTableId) {
             case (-1):
-                if (_directory.getInteger(Mp4VideoDirectory.TAG_DEPTH) < 16) {
+                if (_directory.getInteger(TAG_DEPTH) < 16) {
                     return "Default";
                 } else {
                     return "None";
@@ -67,7 +68,7 @@ public class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private String getGraphicsModeDescription()
     {
-        Integer graphicsMode = _directory.getInteger(Mp4VideoDirectory.TAG_GRAPHICS_MODE);
+        Integer graphicsMode = _directory.getInteger(TAG_GRAPHICS_MODE);
         if (graphicsMode == null)
             return null;
 

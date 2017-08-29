@@ -78,11 +78,5 @@ public class Mp4ReaderTest
         assertEquals(1, sDir.getInt(Mp4SoundDirectory.TAG_NUMBER_OF_CHANNELS));
         assertEquals(16, sDir.getInt(Mp4SoundDirectory.TAG_AUDIO_SAMPLE_SIZE));
         assertEquals(48000, sDir.getInt(Mp4SoundDirectory.TAG_AUDIO_SAMPLE_RATE));
-
-        for (Directory directory : metadata.getDirectories()) {
-            for (Tag tag : directory.getTags()) {
-                System.out.println(tag);
-            }
-        }
     }
 }

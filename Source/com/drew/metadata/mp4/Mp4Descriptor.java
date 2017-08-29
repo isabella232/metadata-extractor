@@ -3,6 +3,7 @@ package com.drew.metadata.mp4;
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Directory;
 import com.drew.metadata.TagDescriptor;
+import static com.drew.metadata.mp4.Mp4Directory.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,11 +19,11 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
     public String getDescription(int tagType)
     {
         switch (tagType) {
-            case (Mp4Directory.TAG_MAJOR_BRAND):
+            case TAG_MAJOR_BRAND:
                 return getMajorBrandDescription();
-            case (Mp4Directory.TAG_COMPATIBLE_BRANDS):
+            case TAG_COMPATIBLE_BRANDS:
                 return getCompatibleBrandsDescription();
-            case (Mp4Directory.TAG_DURATION):
+            case TAG_DURATION:
                 return getDurationDescription();
             default:
                 return _directory.getString(tagType);
@@ -31,8 +32,8 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
 
     private String getMajorBrandDescription()
     {
-        String majorBrandKey = new String(_directory.getByteArray(Mp4Directory.TAG_MAJOR_BRAND));
-        String majorBrandValue = Mp4Dictionary.lookup(Mp4Directory.TAG_MAJOR_BRAND, majorBrandKey);
+        String majorBrandKey = new String(_directory.getByteArray(TAG_MAJOR_BRAND));
+        String majorBrandValue = Mp4Dictionary.lookup(TAG_MAJOR_BRAND, majorBrandKey);
         if (majorBrandValue != null) {
             return majorBrandValue;
         } else {
@@ -42,10 +43,10 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
 
     private String getCompatibleBrandsDescription()
     {
-        String[] compatibleBrandKeys = _directory.getStringArray(Mp4Directory.TAG_COMPATIBLE_BRANDS);
+        String[] compatibleBrandKeys = _directory.getStringArray(TAG_COMPATIBLE_BRANDS);
         ArrayList<String> compatibleBrandsValues = new ArrayList<String>();
         for (String compatibleBrandsKey : compatibleBrandKeys) {
-            String compatibleBrandsValue = Mp4Dictionary.lookup(Mp4Directory.TAG_MAJOR_BRAND, compatibleBrandsKey);
+            String compatibleBrandsValue = Mp4Dictionary.lookup(TAG_MAJOR_BRAND, compatibleBrandsKey);
             if (compatibleBrandsValue != null) {
                 compatibleBrandsValues.add(compatibleBrandsValue);
             } else {
@@ -57,7 +58,7 @@ public class Mp4Descriptor<T extends Directory> extends TagDescriptor<Mp4Directo
 
     private String getDurationDescription()
     {
-        Long durationObject = _directory.getLongObject(Mp4Directory.TAG_DURATION);
+        Long durationObject = _directory.getLongObject(TAG_DURATION);
         if (durationObject == null)
             return null;
         long duration = durationObject;
