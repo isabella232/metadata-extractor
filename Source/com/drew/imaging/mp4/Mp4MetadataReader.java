@@ -2,7 +2,6 @@ package com.drew.imaging.mp4;
 
 import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.mp4.Mp4BoxHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,7 @@ public class Mp4MetadataReader
     {
         try {
             Metadata metadata = new Metadata();
-            new Mp4Reader().extract(metadata, inputStream, new Mp4BoxHandler(metadata));
+            new Mp4Reader().extract(metadata, inputStream);
             return metadata;
         } catch (DataFormatException e) {
             e.printStackTrace();

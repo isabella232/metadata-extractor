@@ -15,31 +15,22 @@ import java.util.zip.DataFormatException;
 public class Mp4Reader
 {
     private StreamReader reader;
-    private int tabCount;
 
-    public void extract(Metadata metadata, InputStream inputStream, Mp4Handler handler) throws IOException, DataFormatException
+    public void extract(Metadata metadata, InputStream inputStream) throws IOException, DataFormatException
     {
         reader = new StreamReader(inputStream);
         reader.setMotorolaByteOrder(true);
 
-        boolean printVisited = true;
-        tabCount = 0;
-
-        if (printVisited) {
-            System.out.println("_______________Beginning to Print Tree_______________");
-            System.out.println("| \"\" = leaf      \"[]\" = container    \"{}\" = Unknown |");
-            System.out.println("_____________________________________________________");
-        }
-
         Container mp4 = new Container("ROOT", 0);
-        processBoxes(reader, -1, mp4, printVisited);
+        processContainer(reader, -1, mp4);
+        mp4.printContainer();
+
         System.out.println("here");
     }
 
-    private void processBoxes(StreamReader reader, long atomEnd, Container parent, boolean printVisited)
+    private void processContainer(StreamReader reader, long atomEnd, Container parent)
     {
         try {
-            long startPos = reader.getPosition();
             while ((atomEnd == -1) ? true : reader.getPosition() < atomEnd) {
 
                 Box box = new Box(reader);
@@ -50,29 +41,11 @@ public class Mp4Reader
                  */
                 if (Mp4ContainerTypes.contains(box)) {
 
-                    if (printVisited) {
-                        for (int i = 0; i < tabCount; i++) {
-                            System.out.print("   " + i + "   |");
-                        }
-                        System.out.println(" [" + box.getType() + "]");
-                        tabCount++;
-                    }
-
                     Container container = new Container(box);
                     parent.addContainer(container);
-                    processBoxes(reader, box.getSize() + reader.getPosition() - 8, container, printVisited);
-                    if (printVisited) {
-                        tabCount--;
-                    }
+                    processContainer(reader, box.getSize() + reader.getPosition() - 8, container);
 
                 } else if (Mp4BoxTypes.contains(box)) {
-
-                    if (printVisited) {
-                        for (int i = 0; i < tabCount; i++) {
-                            System.out.print("   " + i + "   |");
-                        }
-                        System.out.println("  " + box.getType());
-                    }
 
                     SequentialByteArrayReader byteReader = new SequentialByteArrayReader(reader.getBytes((int)box.getSize() - 8));
                     parent.addBox(Mp4BoxTypes.createBox(byteReader, box));
@@ -86,13 +59,6 @@ public class Mp4Reader
                     }
 
                     parent.addBox(box);
-
-                    if (printVisited) {
-                        for (int i = 0; i < tabCount; i++) {
-                            System.out.print("   " + i + "   |");
-                        }
-                        System.out.println(" {" + box.getType() + "}");
-                    }
 
                 }
             }

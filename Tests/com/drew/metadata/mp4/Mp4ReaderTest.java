@@ -34,7 +34,7 @@ public class Mp4ReaderTest
         Metadata metadata = new Metadata();
         InputStream stream = new FileInputStream(new File(file));
         try {
-            new Mp4Reader().extract(metadata, stream, new Mp4BoxHandler(metadata));
+            new Mp4Reader().extract(metadata, stream);
         } catch (Exception e) {
             stream.close();
             throw e;

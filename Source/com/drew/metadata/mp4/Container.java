@@ -206,14 +206,32 @@ public final class Container
         return false;
     }
 
-    @Override
-    public String toString()
+    public void printContainer()
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Box box : _boxes) {
-            stringBuilder.append(box.getType() + ", ");
+        int tabCount = 0;
+        for (Container container : this.getContainers()) {
+            printContainerHelper(container, tabCount);
         }
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
-        return stringBuilder.toString();
+    }
+
+    private void printContainerHelper(Container parent, int tabCount)
+    {
+        for (Box box : parent.getBoxes()) {
+            for (int i = 0; i < tabCount; i++) {
+                System.out.print("   " + i + "   |");
+            }
+            System.out.println("  " + box.getType());
+        }
+        for (Container container : parent.getContainers()) {
+            for (int i = 0; i < tabCount; i++) {
+                System.out.print("   " + i + "   |");
+            }
+            System.out.println(" [" + container.getType() + "]");
+            tabCount++;
+
+            printContainerHelper(container, tabCount);
+
+            tabCount--;
+        }
     }
 }
