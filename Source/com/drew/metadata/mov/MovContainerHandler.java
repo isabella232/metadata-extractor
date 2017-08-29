@@ -61,7 +61,8 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
     }
 
     @Override
-    public boolean isKnownContainer(Atom atom) {
+    public boolean isKnownContainer(Atom atom)
+    {
         for (String s : _containerList) {
             if (atom.getType().contains(s)) {
                 return true;
@@ -71,7 +72,8 @@ public class MovContainerHandler implements QtContainerHandler<Atom, QtContainer
     }
 
     @Override
-    public boolean isKnownQtAtom(Atom atom) {
+    public boolean isKnownQtAtom(Atom atom)
+    {
         for (String s : _atomList) {
             if (atom.getType().equals(s)) {
                 return true;

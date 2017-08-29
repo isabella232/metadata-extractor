@@ -46,6 +46,7 @@ import com.drew.metadata.MetadataException;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.file.FileMetadataReader;
+import com.drew.metadata.heif.HeifContainerHandler;
 import com.drew.metadata.mov.MovContainerHandler;
 import com.drew.metadata.mp4.Mp4ContainerHandler;
 
@@ -177,8 +178,7 @@ public class ImageMetadataReader
             case Mp4:
                 return QtMetadataReader.readMetadata(inputStream, new Mp4ContainerHandler());
             case Heif:
-                return new Metadata();
-//                return QtMetadataReader.readMetadata(inputStream, new HeifContainerHandler());
+                return QtMetadataReader.readMetadata(inputStream, new HeifContainerHandler());
             case AdobeEps:
             case Eps:
                 return EpsMetadataReader.readMetadata(inputStream);

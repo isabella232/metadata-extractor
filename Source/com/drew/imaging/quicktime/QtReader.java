@@ -25,7 +25,6 @@ public class QtReader {
         QtContainer root = new QtContainer("root", 0, null);
         processContainer(reader, -1, root);
         root.printContainer();
-
         handler.addMetadata(metadata, root);
     }
 
