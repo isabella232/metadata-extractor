@@ -1,12 +1,15 @@
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'idea'
 
-version = '2.1.1'
+group = 'widen'
+version = '3.0.0-SNAPSHOT'
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'metadata-extractor',
-                   'Implementation-Version': version,
-                   'Main-Class': 'com.drew.imaging.ImageMetadataReader'
+                'Implementation-Version': version,
+                'Main-Class': 'com.drew.imaging.ImageMetadataReader'
     }
 }
 
@@ -18,10 +21,6 @@ sourceSets {
     test {
         java.srcDirs = ["Tests"]
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 compileJava {
@@ -38,6 +37,64 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '4.1'
+}
+
+repositories {
+    maven {
+        credentials {
+            username System.env.JFROG_USER ?: USER
+            password System.env.JFROG_PASS ?: PASSWORD
+        }
+        url 'https://widen.jfrog.io/widen/repo/'
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username System.env.JFROG_USER ?: USER
+                password System.env.JFROG_PASS ?: PASSWORD
+            }
+
+            if (project.version.endsWith("-SNAPSHOT")) {
+                url 'https://widen.jfrog.io/widen/libs-snapshots-local'
+            }
+            else {
+                url 'https://widen.jfrog.io/widen/libs-releases-local'
+            }
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
+
+tasks.idea {
+    dependsOn = [ cleanIdeaModule, ideaModule ]
+}
+
+idea {
+    module {
+        iml {
+            beforeMerged { module ->
+                module.dependencies.clear()
+            }
+        }
+    }
 }
 
