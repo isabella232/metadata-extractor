@@ -21,7 +21,7 @@ public class ZipFileTypeDetector
 
     public static FileType detectFileType(@NotNull InputStream inputStream) throws IOException
     {
-        filters = Arrays.asList(new IndesignPackageFilter(), new OoxmlFilter(), new ZipFileFilter());
+        filters = Arrays.asList(new IndesignPackageFilter(), /*new OoxmlFilter(), */new ZipFileFilter());
 
         ZipInputStream reader = new ZipInputStream(inputStream);
 
