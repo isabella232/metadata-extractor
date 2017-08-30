@@ -22,7 +22,6 @@
 package com.drew.metadata.exif;
 
 import com.drew.metadata.Directory;
-import sun.security.provider.PolicySpiFile;
 
 import java.util.HashMap;
 
