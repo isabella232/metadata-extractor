@@ -1316,20 +1316,13 @@ public abstract class ExifDescriptorBase<T extends Directory> extends TagDescrip
 
         StringBuilder repeatSize = new StringBuilder();
 
-        for (byte patternSize : patternSizes) {
-            switch (patternSize) {
-                case 0:
-                    repeatSize.append("BlackLevelRepeatRows" + ", ");
-                    break;
-                case 1:
-                    repeatSize.append("BlackLevelRepeatCols" + ", ");
-                    break;
-                default:
-                    repeatSize.append("Unknown (" + (int)patternSize + ")" + ", ");
-            }
-        }
+        assert(patternSizes.length == 2);
 
-        repeatSize.delete(repeatSize.length() - 2, repeatSize.length() - 1);
+        repeatSize.append("Rows: ");
+        repeatSize.append((int)patternSizes[0]);
+        repeatSize.append(", Columns: ");
+        repeatSize.append((int)patternSizes[1]);
+
         return repeatSize.toString();
     }
 
@@ -1353,29 +1346,29 @@ public abstract class ExifDescriptorBase<T extends Directory> extends TagDescrip
     public String getSizeDescription()
     {
         Object values = _directory.getObject(TAG_DEFAULT_CROP_SIZE);
-        StringBuilder defaultCropSize = new StringBuilder();
+        StringBuilder size = new StringBuilder();
         if (values instanceof Rational[]) {
             Rational[] rationals = (Rational[])values;
             if (rationals.length >= 2) {
-                defaultCropSize.append("Image Width: " + rationals[0].getNumerator() + "px, ");
-                defaultCropSize.append("Image Length: " + rationals[1].getNumerator() + "px");
+                size.append("Image Width: " + rationals[0].getNumerator() + "px, ");
+                size.append("Image Length: " + rationals[1].getNumerator() + "px");
             }
         } else if (values instanceof short[]) {
             short[] shorts = (short[])values;
             if (shorts.length >= 2) {
-                defaultCropSize.append("Image Width: " + shorts[0] + "px, ");
-                defaultCropSize.append("Image Length: " + shorts[1] + "px");
+                size.append("Image Width: " + shorts[0] + "px, ");
+                size.append("Image Length: " + shorts[1] + "px");
             }
         } else if (values instanceof long[]) {
             long[] longs = (long[])values;
             if (longs.length >= 2) {
-                defaultCropSize.append("Image Width: " + longs[0] + "px, ");
-                defaultCropSize.append("Image Length: " + longs[1] + "px");
+                size.append("Image Width: " + longs[0] + "px, ");
+                size.append("Image Length: " + longs[1] + "px");
             }
         } else {
             return null;
         }
-        return defaultCropSize.toString();
+        return size.toString();
     }
 
 
