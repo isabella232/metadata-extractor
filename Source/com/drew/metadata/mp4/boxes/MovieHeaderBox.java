@@ -12,14 +12,14 @@ import java.util.Date;
  */
 public class MovieHeaderBox extends FullBox
 {
-    protected long creationTime;
-    protected long modificationTime;
-    protected long timescale;
-    protected long duration;
-    protected int rate;
-    protected int volume;
-    protected int[] matrix;
-    protected long nextTrackID;
+    long creationTime;
+    long modificationTime;
+    long timescale;
+    long duration;
+    int rate;
+    int volume;
+    int[] matrix;
+    long nextTrackID;
 
     public MovieHeaderBox(SequentialReader reader, Box box) throws IOException
     {

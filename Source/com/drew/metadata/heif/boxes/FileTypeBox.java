@@ -11,9 +11,9 @@ import java.util.ArrayList;
  */
 public class FileTypeBox extends Box
 {
-    public String majorBrand;
-    public long minorVersion;
-    public ArrayList<String> compatibleBrands;
+    String majorBrand;
+    long minorVersion;
+    ArrayList<String> compatibleBrands;
 
     public FileTypeBox(SequentialReader reader, Box box) throws IOException
     {
@@ -32,5 +32,10 @@ public class FileTypeBox extends Box
         directory.setString(HeifDirectory.TAG_MAJOR_BRAND, majorBrand);
         directory.setLong(HeifDirectory.TAG_MINOR_VERSION, minorVersion);
         directory.setStringArray(HeifDirectory.TAG_COMPATIBLE_BRANDS, compatibleBrands.toArray(new String[compatibleBrands.size()]));
+    }
+
+    public ArrayList<String> getCompatibleBrands()
+    {
+        return compatibleBrands;
     }
 }

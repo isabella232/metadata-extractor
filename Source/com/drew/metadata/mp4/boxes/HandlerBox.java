@@ -11,12 +11,6 @@ import java.nio.charset.Charset;
 public class HandlerBox extends FullBox
 {
     String handlerType;
-
-    public String getHandlerType()
-    {
-        return handlerType;
-    }
-
     String name;
 
     public HandlerBox(SequentialReader reader, Box box) throws IOException
@@ -27,5 +21,10 @@ public class HandlerBox extends FullBox
         handlerType = reader.getString(4);
         reader.skip(12); // Reserved
         name = reader.getNullTerminatedString((int)size - 32, Charset.defaultCharset());
+    }
+
+    public String getHandlerType()
+    {
+        return handlerType;
     }
 }

@@ -9,8 +9,8 @@ import java.io.IOException;
  */
 public class FullBox extends Box
 {
-    protected int version;
-    protected byte[] flags;
+    int version;
+    byte[] flags;
 
     public FullBox(SequentialReader reader, Box box) throws IOException
     {

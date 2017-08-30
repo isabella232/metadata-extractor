@@ -76,7 +76,7 @@ public class HeifBoxHandler extends HeifHandler<HeifDirectory>
     {
         FileTypeBox fileTypeBox = new FileTypeBox(reader, box);
         fileTypeBox.addMetadata(directory);
-        if (!fileTypeBox.compatibleBrands.contains("mif1")) {
+        if (!fileTypeBox.getCompatibleBrands().contains("mif1")) {
             directory.addError("File Type Box does not contain required brand, mif1");
         }
     }
